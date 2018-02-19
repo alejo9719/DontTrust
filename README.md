@@ -4,7 +4,6 @@ Introduction to Videogames Development Course Project
 # TODO
 
 Assets:
-	.
 
 	Models:
   	Background: Low Poly Mountains
@@ -21,6 +20,7 @@ Assets:
 	Sounds:
 
 Programming:
+
 	Camera movement
 	Main Menu
 	Character movement / Animation
@@ -31,6 +31,7 @@ Programming:
   
   
  Documento de diseño:
+ 
 	Gant Diagram
 	Add FSM to Document
 	SrotyBoards
