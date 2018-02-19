@@ -2,7 +2,9 @@
 Introduction to Videogames Development Course Project
 
 # TODO
+
 Assets:
+	.
 
 	Models:
   	Background: Low Poly Mountains
