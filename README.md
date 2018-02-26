@@ -40,4 +40,10 @@ Programming:
 # Tutorial:
 
 	https://www.youtube.com/watch?v=RHie6Hg0mQ4&list=PL2cNFQAw_ndx1ID-DuvFoeGR_nE4jOFTq
+	
+	Tutorial MAKE A GAME (Viejo, pero más completo):
+	https://www.youtube.com/watch?v=g5QFW12utdU
+	
+	Tutorial MAKE A GAME (Nuevo, más corto):
+	https://www.youtube.com/watch?v=IlKaB1etrik
 
