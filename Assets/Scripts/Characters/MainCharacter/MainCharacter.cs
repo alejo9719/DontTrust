@@ -23,6 +23,7 @@ namespace DontTrust.Characters.Main
 		const float k_Half = 0.5f;
 		float m_TurnAmount;
 		float m_ForwardAmount;
+		int m_CharacterDirection;
 		Vector3 m_GroundNormal;
 		float m_CapsuleHeight;
 		Vector3 m_CapsuleCenter;
@@ -48,7 +49,8 @@ namespace DontTrust.Characters.Main
 
 			// convert the world relative moveInput vector into a local-relative
 			// turn amount and forward amount required to head in the desired
-			// direction.
+			// direction.}
+			m_CharacterDirection = move.z==0? 0 : (move.z>0? 1 : -1);
 			if (move.magnitude > 1f) move.Normalize();
 			move = transform.InverseTransformDirection(move);
 			CheckGroundStatus();
@@ -169,7 +171,11 @@ namespace DontTrust.Characters.Main
 			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
 			{
 				// jump!
-				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
+				//m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
+
+				Vector3 JumpForce = new Vector3(0, m_JumpPower*2, 0);
+				m_Rigidbody.AddForce (JumpForce, ForceMode.Impulse);
+
 				m_IsGrounded = false;
 				m_Animator.applyRootMotion = false;
 				m_GroundCheckDistance = 0.1f;
@@ -188,14 +194,25 @@ namespace DontTrust.Characters.Main
 		{
 			// we implement this function to override the default root motion.
 			// this allows us to modify the positional speed before it's applied.
-			if (m_IsGrounded && Time.deltaTime > 0)
+			if (Time.deltaTime > 0)
 			{
-				Vector3 v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
+				Vector3 v;
+				if (m_IsGrounded) {
+					v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
+					if (m_Crouching) {
+						v *= 2;
+					}
+				}
+				else {
+					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier/5) / Time.deltaTime;
+				}
 
 				// we preserve the existing y part of the current velocity.
-				v.z += m_Rigidbody.velocity.z/2;
-				v.y = m_Rigidbody.velocity.y;
-				m_Rigidbody.velocity = v;
+				//v.z += m_Rigidbody.velocity.z/2;
+				//v.y = m_Rigidbody.velocity.y;
+				//m_Rigidbody.velocity = v;
+
+				m_Rigidbody.AddForce (v);
 			}
 		}
 
