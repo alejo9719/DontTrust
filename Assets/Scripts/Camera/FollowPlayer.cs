@@ -1,25 +1,25 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.ThirdPerson;
+using DontTrust.Characters.Main;
 
 public class FollowPlayer : MonoBehaviour {
 
 	public GameObject Player;
 	public Vector3 offset;
-	private ThirdPersonCharacter character;
+	private MainCharacter character;
 	private Vector3 newPosition;
 
 	void Start()
 	{
 		//offset = transform.position - Player.transform.position;
-		offset= new Vector3(3f, 1.2f, 0f);
+		//offset= new Vector3(3f, 1.2f, 0f);
 		newPosition = Player.transform.position + offset;
 	}
 
 	void LateUpdate()
 	{
-		character= Player.GetComponent<ThirdPersonCharacter>();
+		character= Player.GetComponent<MainCharacter>();
 
 		if (!character.m_IsGrounded) {
 			newPosition.x += 0.05f;

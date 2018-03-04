@@ -1,0 +1,14 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Characters\MainCharacter\MainCharacterScript.cs">
+    <Files>
+      <File FileName="Assets\Scripts\Camera\FollowPlayer.cs" Line="16" Column="5" />
+      <File FileName="Assets\Scripts\Characters\MainCharacter\MainCharacterControl.cs" Line="10" Column="21" />
+      <File FileName="Assets\Scripts\Characters\MainCharacter\MainCharacterScript.cs" Line="8" Column="28" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
