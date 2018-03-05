@@ -145,7 +145,13 @@ namespace DontTrust.Characters.Main
 			// which affects the movement speed because of the root motion.
 			if (m_IsGrounded && move.magnitude > 0)
 			{
-				m_Animator.speed = m_AnimSpeedMultiplier;
+				m_Animator.speed = m_AnimSpeedMultiplier*Mathf.Abs(m_Rigidbody.velocity.z/25);
+				if (m_Animator.speed > 1.7f) {
+					m_Animator.speed = 1.7f;
+				}
+				if (m_Animator.speed < 0.1f) {
+					m_Animator.speed = 0.1f;
+				}
 			}
 			else
 			{
@@ -160,6 +166,10 @@ namespace DontTrust.Characters.Main
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
 			m_Rigidbody.AddForce(extraGravityForce);
+			//Debug.Log (m_Rigidbody.velocity.y);
+			if (m_Rigidbody.velocity.y < 0) {
+				m_Rigidbody.AddForce(Physics.gravity*5);
+			}
 
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 		}
@@ -198,9 +208,10 @@ namespace DontTrust.Characters.Main
 			{
 				Vector3 v;
 				if (m_IsGrounded) {
-					v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
+					//v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
+					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier) / Time.deltaTime;
 					if (m_Crouching) {
-						v *= 2;
+						v /= 3;
 					}
 				}
 				else {
