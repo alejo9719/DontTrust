@@ -80,7 +80,7 @@ namespace DontTrust.Characters.Main
 
 		void ScaleCapsuleForCrouching(bool crouch)
 		{
-			if (m_IsGrounded && crouch)
+			if (crouch)//(m_IsGrounded && crouch)
 			{
 				if (m_Crouching) return;
 				m_Capsule.height = m_Capsule.height / 2f;
@@ -145,12 +145,12 @@ namespace DontTrust.Characters.Main
 			// which affects the movement speed because of the root motion.
 			if (m_IsGrounded && move.magnitude > 0)
 			{
-				m_Animator.speed = m_AnimSpeedMultiplier*Mathf.Abs(m_Rigidbody.velocity.z/25);
-				if (m_Animator.speed > 1.7f) {
-					m_Animator.speed = 1.7f;
+				m_Animator.speed = m_AnimSpeedMultiplier*Mathf.Abs(m_Rigidbody.velocity.z/30); //Running animation speed is faster as the character moves faster
+				if (m_Animator.speed > 1.5f) { //Upper animation speed limit
+					m_Animator.speed = 1.5f;
 				}
-				if (m_Animator.speed < 0.1f) {
-					m_Animator.speed = 0.1f;
+				if (m_Animator.speed < 0.7f) { //Lower animation speed limit
+					m_Animator.speed = 0.7f;
 				}
 			}
 			else
@@ -166,12 +166,18 @@ namespace DontTrust.Characters.Main
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
 			m_Rigidbody.AddForce(extraGravityForce);
-			//Debug.Log (m_Rigidbody.velocity.y);
-			if (m_Rigidbody.velocity.y < 0) {
-				m_Rigidbody.AddForce(Physics.gravity*5);
-			}
 
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
+
+			//Debug.Log (m_Rigidbody.velocity.y);
+			if (m_Rigidbody.velocity.y < 0f) { //Gravity multiplier when falling (falling is faster than going up)
+				m_Rigidbody.AddForce(Physics.gravity* (8+m_Rigidbody.velocity.y/5) );
+			}
+
+			if (m_Rigidbody.velocity.z != 0) { //Extra horizontal drag when character is mid-air
+				Vector3 v = new Vector3 (0, 0, (-(m_Rigidbody.velocity.z / Mathf.Abs (m_Rigidbody.velocity.z)) * m_MoveSpeedMultiplier / 4.5f) / Time.deltaTime); //Normalize velocity to obtain direction and apply opposite force
+				m_Rigidbody.AddForce (v);
+			}
 		}
 
 
@@ -209,21 +215,34 @@ namespace DontTrust.Characters.Main
 				Vector3 v;
 				if (m_IsGrounded) {
 					//v = (m_Animator.deltaPosition * m_MoveSpeedMultiplier) / Time.deltaTime;
-					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier) / Time.deltaTime;
-					if (m_Crouching) {
-						v /= 3;
+					if (!m_Crouching) {
+						v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier) / Time.deltaTime;
+					}
+					else{
+						v = 0*Vector3.forward;
 					}
 				}
-				else {
-					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier/5) / Time.deltaTime;
+				else{
+					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier/4) / Time.deltaTime;
 				}
+
+				m_Rigidbody.AddForce (v);
 
 				// we preserve the existing y part of the current velocity.
 				//v.z += m_Rigidbody.velocity.z/2;
 				//v.y = m_Rigidbody.velocity.y;
 				//m_Rigidbody.velocity = v;
 
-				m_Rigidbody.AddForce (v);
+				/* Character has to stop faster when not running (no button pressed) */
+				if (m_CharacterDirection == 0 && Mathf.Abs(m_Rigidbody.velocity.z)>1  && m_IsGrounded==true && m_Crouching==false) { //Velocity has to be greater than one in order to not reduce
+																																	//it when the character is stopped. It is not reduced when sliding.
+					Vector3 vel = m_Rigidbody.velocity;
+					if (vel.z > 0) //Character running right
+						vel.z -= 2;
+					else //Character running left
+						vel.z += 2;
+					m_Rigidbody.velocity = vel;
+				}
 			}
 		}
 

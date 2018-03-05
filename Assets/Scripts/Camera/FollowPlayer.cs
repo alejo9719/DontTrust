@@ -7,6 +7,7 @@ public class FollowPlayer : MonoBehaviour {
 
 	public GameObject Player;
 	public Vector3 offset;
+	public float ZoomOutSpeed;
 	private MainCharacter character;
 	private Vector3 newPosition;
 
@@ -22,10 +23,10 @@ public class FollowPlayer : MonoBehaviour {
 		character= Player.GetComponent<MainCharacter>();
 
 		if (!character.m_IsGrounded) {
-			newPosition.x += 0.05f;
+			newPosition.x += ZoomOutSpeed;
 		} 
 		else if (newPosition.x >= Player.transform.position.x + offset.x) {
-			newPosition.x -= 0.1f;
+			newPosition.x -= ZoomOutSpeed*2;
 		}
 
 		newPosition.y += Player.transform.position.y + offset.y - newPosition.y;
