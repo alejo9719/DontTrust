@@ -13,10 +13,6 @@ Assets:
   	Power Ups
     
 	Textures:
-    
-	Animations:
-  	Character Animation
-
 	Sounds:
 
 Programming:
@@ -32,10 +28,7 @@ Programming:
   
  Documento de diseño:
  
-	Gant Diagram
-	Add FSM to Document
-	SrotyBoards
-	Map / Characters Sketches
+	Map Sketches
 	
 # Tutorial:
 
