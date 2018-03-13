@@ -18,6 +18,7 @@ namespace DontTrust.Characters.Main
 
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
+		Transform m_Character;
 		public bool m_IsGrounded;
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;
@@ -29,12 +30,14 @@ namespace DontTrust.Characters.Main
 		Vector3 m_CapsuleCenter;
 		CapsuleCollider m_Capsule;
 		bool m_Crouching;
+		bool m_WallCollision;
 
 
 		void Start()
 		{
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
+			m_Character = this.gameObject.transform.GetChild (0);
 			m_Capsule = GetComponent<CapsuleCollider>();
 			m_CapsuleHeight = m_Capsule.height;
 			m_CapsuleCenter = m_Capsule.center;
@@ -67,7 +70,7 @@ namespace DontTrust.Characters.Main
 			}
 			else
 			{
-				HandleAirborneMovement();
+				HandleAirborneMovement(crouch, jump);
 			}
 
 			ScaleCapsuleForCrouching(crouch);
@@ -123,6 +126,7 @@ namespace DontTrust.Characters.Main
 			m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool("Crouch", m_Crouching);
+			m_Animator.SetBool("WallSliding", m_WallCollision);
 			m_Animator.SetBool("OnGround", m_IsGrounded);
 			if (!m_IsGrounded)
 			{
@@ -161,7 +165,7 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		void HandleAirborneMovement()
+		void HandleAirborneMovement(bool crouch, bool jump)
 		{
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
@@ -177,6 +181,27 @@ namespace DontTrust.Characters.Main
 			if (m_Rigidbody.velocity.z != 0) { //Extra horizontal drag when character is mid-air
 				Vector3 v = new Vector3 (0, 0, (-(m_Rigidbody.velocity.z / Mathf.Abs (m_Rigidbody.velocity.z)) * m_MoveSpeedMultiplier / 4.5f) / Time.deltaTime); //Normalize velocity to obtain direction and apply opposite force
 				m_Rigidbody.AddForce (v);
+			}
+
+			if (m_Rigidbody.velocity.z == 0) { //WallJump (TEMPORAL, DEBE VERIFICAR COLISION CON OBJETO DE TIPO MURO)
+				m_WallCollision = true;
+			} else {
+				m_WallCollision = false;
+				//m_Character.rotation = new Quaternion(m_Character.rotation.x, m_Character.rotation.y+0, m_Character.rotation.z, m_Character.rotation.w);
+			}
+
+			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo (0).IsName ("WallSliding") && m_CharacterDirection!=0) //Perform walljump (has to be wallSliding and pressing a key -has a direction-)
+			{
+				float jumpDirection = -1; //Assumes the character is facing right (has to jump to the opposite direction
+				if (m_Rigidbody.rotation.y >= 0.8) { //The character is facng left
+					jumpDirection = 1;
+				}
+				Vector3 JumpForce = new Vector3(0, m_JumpPower*2, jumpDirection * m_JumpPower*3);
+				m_Rigidbody.AddForce (JumpForce, ForceMode.Impulse);
+
+				m_IsGrounded = false;
+				m_Animator.applyRootMotion = false;
+				m_GroundCheckDistance = 0.1f;
 			}
 		}
 
