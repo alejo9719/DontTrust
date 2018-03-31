@@ -263,9 +263,9 @@ namespace DontTrust.Characters.Main
 																																	//it when the character is stopped. It is not reduced when sliding.
 					Vector3 vel = m_Rigidbody.velocity;
 					if (vel.z > 0) //Character running right
-						vel.z -= 2;
+						vel.z -= 3f;
 					else //Character running left
-						vel.z += 2;
+						vel.z += 3f;
 					m_Rigidbody.velocity = vel;
 				}
 			}
