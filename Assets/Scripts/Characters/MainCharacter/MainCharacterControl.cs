@@ -35,10 +35,13 @@ namespace DontTrust.Characters.Main
 
         private void Update()
         {
-            if (!m_Jump)
-            {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-            }
+			if (!m_Jump) {
+				m_Jump = CrossPlatformInputManager.GetButtonDown ("Jump");
+			}
+			/*else
+			{
+				m_Jump = !CrossPlatformInputManager.GetButtonUp ("Jump");
+			}*/
         }
 
 

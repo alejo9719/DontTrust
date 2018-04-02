@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace DontTrust.Characters.Main
 {
@@ -126,7 +127,7 @@ namespace DontTrust.Characters.Main
 			m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetFloat("Turn", m_TurnAmount, 0.1f, Time.deltaTime);
 			m_Animator.SetBool("Crouch", m_Crouching);
-			m_Animator.SetBool("WallSliding", m_WallCollision);
+			m_Animator.SetBool("WallSliding", m_WallCollision && !m_IsGrounded); //Has to be wall colliding and mid-air to execute a wall-slide
 			m_Animator.SetBool("OnGround", m_IsGrounded);
 			if (!m_IsGrounded)
 			{
@@ -149,7 +150,7 @@ namespace DontTrust.Characters.Main
 			// which affects the movement speed because of the root motion.
 			if (m_IsGrounded && move.magnitude > 0)
 			{
-				m_Animator.speed = m_AnimSpeedMultiplier*Mathf.Abs(m_Rigidbody.velocity.z/30); //Running animation speed is faster as the character moves faster
+				m_Animator.speed = m_AnimSpeedMultiplier*Mathf.Abs(m_Rigidbody.velocity.z/40); //Running animation speed is faster as the character moves faster
 				if (m_Animator.speed > 1.5f) { //Upper animation speed limit
 					m_Animator.speed = 1.5f;
 				}
@@ -173,9 +174,14 @@ namespace DontTrust.Characters.Main
 
 			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
 
-			//Debug.Log (m_Rigidbody.velocity.y);
 			if (m_Rigidbody.velocity.y < 0f) { //Gravity multiplier when falling (falling is faster than going up)
-				m_Rigidbody.AddForce(Physics.gravity* (8+m_Rigidbody.velocity.y/5) );
+				m_Rigidbody.AddForce (Physics.gravity * (8 + m_Rigidbody.velocity.y / 5)); //Since y velocity is negative, the gravity multiplier becomes smaller with greater speed
+			}
+			else if (m_Rigidbody.velocity.y > 0f && !CrossPlatformInputManager.GetButton ("Jump")) { //Gravity multiplier when jumping button is not pressed
+				m_Rigidbody.AddForce (Physics.gravity * 3);
+			}
+			if (m_WallCollision && m_Rigidbody.velocity.y < -2f) {
+				m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, -2f, m_Rigidbody.velocity.z); //Gravity multiplier has to be smaller when wallsliding
 			}
 
 			if (m_Rigidbody.velocity.z != 0) { //Extra horizontal drag when character is mid-air
@@ -183,14 +189,7 @@ namespace DontTrust.Characters.Main
 				m_Rigidbody.AddForce (v);
 			}
 
-			if (m_Rigidbody.velocity.z == 0) { //WallJump (TEMPORAL, DEBE VERIFICAR COLISION CON OBJETO DE TIPO MURO)
-				m_WallCollision = true;
-			} else {
-				m_WallCollision = false;
-				//m_Character.rotation = new Quaternion(m_Character.rotation.x, m_Character.rotation.y+0, m_Character.rotation.z, m_Character.rotation.w);
-			}
-
-			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo (0).IsName ("WallSliding") && m_CharacterDirection!=0) //Perform walljump (has to be wallSliding and pressing a key -has a direction-)
+			if (jump && (m_Animator.GetCurrentAnimatorStateInfo (0).IsName ("WallSliding") || m_WallCollision) && !m_IsGrounded && m_CharacterDirection!=0) //Perform walljump (has to be wallSliding and pressing a key -has a direction-)
 			{
 				float jumpDirection = -1; //Assumes the character is facing right (has to jump to the opposite direction
 				if (m_Rigidbody.rotation.y >= 0.8) { //The character is facng left
@@ -231,6 +230,26 @@ namespace DontTrust.Characters.Main
 		}
 
 
+		public void OnCollisionEnter(Collision col)
+		{
+			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
+				m_WallCollision = true;
+			}
+		}
+
+		public void OnCollisionExit (Collision col)
+		{
+			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
+				//m_WallCollision = false;
+				InvokeRepeating("makeboolfalse", 0.05f, 0);
+			}
+		}
+
+		void makeboolfalse()
+		{
+			m_WallCollision = false;
+		}
+
 		public void OnAnimatorMove()
 		{
 			// we implement this function to override the default root motion.
@@ -248,10 +267,11 @@ namespace DontTrust.Characters.Main
 					}
 				}
 				else{
-					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier/4) / Time.deltaTime;
+					v = (m_CharacterDirection * Vector3.forward * m_MoveSpeedMultiplier / 2) / Time.deltaTime;
 				}
 
 				m_Rigidbody.AddForce (v);
+				//m_Rigidbody.velocity += v;
 
 				// we preserve the existing y part of the current velocity.
 				//v.z += m_Rigidbody.velocity.z/2;
