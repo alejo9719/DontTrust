@@ -8,33 +8,38 @@ namespace DontTrust.Characters.Main
 	[RequireComponent(typeof(Animator))]
 	public class MainCharacter : MonoBehaviour
 	{
+		/* Serialized private fields (not visible for other classes) */
 		[SerializeField] float m_MovingTurnSpeed = 360;
 		[SerializeField] float m_StationaryTurnSpeed = 180;
 		[SerializeField] float m_JumpPower = 12f;
 		[Range(1f, 4f)][SerializeField] float m_GravityMultiplier = 2f;
-		[SerializeField] float m_RunCycleLegOffset = 0.2f; //specific to the character in sample assets, will need to be modified to work with others
+		[SerializeField] float m_RunCycleLegOffset = 0.2f; //Specific to the character in sample assets, will need to be modified to work with others
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.1f;
 
+		/* Public fields */
+		public bool m_IsGrounded; //Flag to indicate if the character is touching the ground. Public in order for other objects to be able to see it.
+
+		/* Private fields */
 		Rigidbody m_Rigidbody;
 		Animator m_Animator;
 		Transform m_Character;
-		public bool m_IsGrounded;
 		float m_OrigGroundCheckDistance;
 		const float k_Half = 0.5f;
 		float m_TurnAmount;
 		float m_ForwardAmount;
-		int m_CharacterDirection;
-		Vector3 m_GroundNormal;
-		float m_CapsuleHeight;
-		Vector3 m_CapsuleCenter;
-		CapsuleCollider m_Capsule;
-		bool m_Crouching;
-		bool m_WallCollision;
+		int m_CharacterDirection; //Character's facing direction
+		Vector3 m_GroundNormal; //Ground normal vector
+		float m_CapsuleHeight; //Height of the collider
+		Vector3 m_CapsuleCenter; //Center of the collider
+		CapsuleCollider m_Capsule; //Character's collider
+		bool m_Crouching; //Crouching flag
+		bool m_WallCollision; //Wall collision flag
+		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127).
 
-
-		void Start()
+		/* Methods */
+		void Start() //Initialization method
 		{
 			m_Animator = GetComponent<Animator>();
 			m_Rigidbody = GetComponent<Rigidbody>();
@@ -45,10 +50,22 @@ namespace DontTrust.Characters.Main
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
+
+			m_Health = 100;
 		}
 
 
-		public void Move(Vector3 move, bool crouch, bool jump)
+		public void UpdateHealth() //Check the health conditions and update the health indicator in the GUI.
+		{
+			if(m_Health<=0){
+				m_Health = 0;
+			}
+
+			Debug.Log("Health = " + m_Health);
+		}
+
+
+		public void Move(Vector3 move, bool crouch, bool jump) //Calls the other movement methods. Is called by the MainCharacterControl FixedUpdate() method
 		{
 
 			// convert the world relative moveInput vector into a local-relative
@@ -82,7 +99,7 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		void ScaleCapsuleForCrouching(bool crouch)
+		void ScaleCapsuleForCrouching(bool crouch) //Scales the character collider when it crouches or slides
 		{
 			if (crouch)//(m_IsGrounded && crouch)
 			{
@@ -106,7 +123,7 @@ namespace DontTrust.Characters.Main
 			}
 		}
 
-		void PreventStandingInLowHeadroom()
+		void PreventStandingInLowHeadroom() //Prevents the character to stand up when it's below a collider lower than the character height
 		{
 			// prevent standing up in crouch-only zones
 			if (!m_Crouching)
@@ -121,7 +138,7 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		void UpdateAnimator(Vector3 move)
+		void UpdateAnimator(Vector3 move) //Updates the animator variables in order to trigger transitions. Also updates the animator speed.
 		{
 			// update the animator parameters
 			m_Animator.SetFloat("Forward", m_ForwardAmount, 0.1f, Time.deltaTime);
@@ -166,7 +183,7 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		void HandleAirborneMovement(bool crouch, bool jump)
+		void HandleAirborneMovement(bool crouch, bool jump) //Manages the character movement when mid-air
 		{
 			// apply extra gravity from multiplier:
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
@@ -192,7 +209,7 @@ namespace DontTrust.Characters.Main
 			if (jump && (m_Animator.GetCurrentAnimatorStateInfo (0).IsName ("WallSliding") || m_WallCollision) && !m_IsGrounded && m_CharacterDirection!=0) //Perform walljump (has to be wallSliding and pressing a key -has a direction-)
 			{
 				float jumpDirection = -1; //Assumes the character is facing right (has to jump to the opposite direction
-				if (m_Rigidbody.rotation.y >= 0.8) { //The character is facng left
+				if (m_Rigidbody.rotation.y >= 0.8) { //The character is facing left
 					jumpDirection = 1;
 				}
 				Vector3 JumpForce = new Vector3(0, m_JumpPower*2, jumpDirection * m_JumpPower*3);
@@ -205,7 +222,7 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		void HandleGroundedMovement(bool crouch, bool jump)
+		void HandleGroundedMovement(bool crouch, bool jump) //Manages the character movement when on ground.
 		{
 			// check whether conditions are right to allow a jump:
 			if (jump && !crouch && m_Animator.GetCurrentAnimatorStateInfo(0).IsName("Grounded"))
@@ -213,9 +230,11 @@ namespace DontTrust.Characters.Main
 				// jump!
 				//m_Rigidbody.velocity = new Vector3(m_Rigidbody.velocity.x, m_JumpPower, m_Rigidbody.velocity.z);
 
+				//Apply the jump force
 				Vector3 JumpForce = new Vector3(0, m_JumpPower*2, 0);
 				m_Rigidbody.AddForce (JumpForce, ForceMode.Impulse);
 
+				//Clear flags
 				m_IsGrounded = false;
 				m_Animator.applyRootMotion = false;
 				m_GroundCheckDistance = 0.1f;
@@ -230,27 +249,31 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		public void OnCollisionEnter(Collision col)
+		public void OnCollisionEnter(Collision col) //Collision with another object is detected
 		{
 			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
 				m_WallCollision = true;
 			}
-		}
 
-		public void OnCollisionExit (Collision col)
-		{
-			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
-				//m_WallCollision = false;
-				InvokeRepeating("makeboolfalse", 0.05f, 0);
+			if (col.gameObject.CompareTag ("Enemy")) {
+				m_Health -= 50; //TEMPORAL
 			}
 		}
 
-		void makeboolfalse()
+		public void OnCollisionExit (Collision col) //Collision with another object finishes
+		{
+			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
+				//m_WallCollision = false;
+				InvokeRepeating("makeCollisionFalse", 0.05f, 0); //Delays the turning off of the wall collision flag in order to give the player some time to perform the wall jump.
+			}
+		}
+
+		void makeCollisionFalse() //Makes the wall collision flag false. Used to put a delay on this action inside the OnCollisionExit method.
 		{
 			m_WallCollision = false;
 		}
 
-		public void OnAnimatorMove()
+		public void OnAnimatorMove() //Move the character when the walk animation is executed
 		{
 			// we implement this function to override the default root motion.
 			// this allows us to modify the positional speed before it's applied.
@@ -278,7 +301,7 @@ namespace DontTrust.Characters.Main
 				//v.y = m_Rigidbody.velocity.y;
 				//m_Rigidbody.velocity = v;
 
-				/* Character has to stop faster when not running (no button pressed) */
+				//Character has to stop faster when not running (no button pressed)
 				if (m_CharacterDirection == 0 && Mathf.Abs(m_Rigidbody.velocity.z)>1  && m_IsGrounded==true && m_Crouching==false) { //Velocity has to be greater than one in order to not reduce
 																																	//it when the character is stopped. It is not reduced when sliding.
 					Vector3 vel = m_Rigidbody.velocity;
@@ -292,7 +315,7 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		void CheckGroundStatus()
+		void CheckGroundStatus() //Checks if the character is on ground.
 		{
 			RaycastHit hitInfo;
 #if UNITY_EDITOR
