@@ -2236,6 +2236,11 @@ Prefab:
       propertyPath: m_MoveSpeedMultiplier
       value: 0.8
       objectReference: {fileID: 0}
+    - target: {fileID: 136698381977697804, guid: 1017d689a3a804f4dbd1767f329ff7f0,
+        type: 2}
+      propertyPath: m_Radius
+      value: 0.35
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1017d689a3a804f4dbd1767f329ff7f0, type: 2}
   m_IsPrefabParent: 0
