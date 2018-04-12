@@ -212,7 +212,7 @@ namespace DontTrust.Characters.Main
 				if (m_Rigidbody.rotation.y >= 0.8) { //The character is facing left
 					jumpDirection = 1;
 				}
-				Vector3 JumpForce = new Vector3(0, m_JumpPower*2, jumpDirection * m_JumpPower*3);
+				Vector3 JumpForce = new Vector3(0, m_JumpPower*1.5f, jumpDirection * m_JumpPower*2f);
 				m_Rigidbody.AddForce (JumpForce, ForceMode.Impulse);
 
 				m_IsGrounded = false;
