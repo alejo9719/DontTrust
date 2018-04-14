@@ -53,6 +53,7 @@
   <ItemGroup>
      <Compile Include="Assets\BulletController.cs" />
      <Compile Include="Assets\CrouchedEnemy.cs" />
+     <Compile Include="Assets\GreatAxe.cs" />
      <Compile Include="Assets\Prefabs\ThirdPersonCharacter\Scripts\AICharacterControl.cs" />
      <Compile Include="Assets\Prefabs\ThirdPersonCharacter\Scripts\ThirdPersonCharacter.cs" />
      <Compile Include="Assets\Prefabs\ThirdPersonCharacter\Scripts\ThirdPersonUserControl.cs" />

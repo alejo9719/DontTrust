@@ -13,7 +13,7 @@ public class UIManagement : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		m_Player = GameObject.FindGameObjectWithTag ("Player"); //Find the main character's game object
-		m_Character= m_Player.GetComponent<MainCharacter>();
+		m_Character = m_Player.GetComponent<MainCharacter>();
 	}
 	
 	// Update is called once per frame

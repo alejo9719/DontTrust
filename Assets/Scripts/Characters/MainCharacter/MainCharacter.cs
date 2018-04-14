@@ -61,7 +61,7 @@ namespace DontTrust.Characters.Main
 				m_Health = 0;
 			}
 
-			Debug.Log("Health = " + m_Health);
+			//Debug.Log("Health = " + m_Health);
 		}
 
 
@@ -149,6 +149,7 @@ namespace DontTrust.Characters.Main
 			if (!m_IsGrounded)
 			{
 				m_Animator.SetFloat("Jump", m_Rigidbody.velocity.y);
+				//Debug.Log (m_Rigidbody.velocity.y);
 			}
 
 			// calculate which leg is behind, so as to leave that leg trailing in the jump animation
@@ -189,7 +190,7 @@ namespace DontTrust.Characters.Main
 			Vector3 extraGravityForce = (Physics.gravity * m_GravityMultiplier) - Physics.gravity;
 			m_Rigidbody.AddForce(extraGravityForce);
 
-			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.01f;
+			m_GroundCheckDistance = m_Rigidbody.velocity.y < 0 ? m_OrigGroundCheckDistance : 0.4f;//0.01f
 
 			if (m_Rigidbody.velocity.y < 0f) { //Gravity multiplier when falling (falling is faster than going up)
 				m_Rigidbody.AddForce (Physics.gravity * (8 + m_Rigidbody.velocity.y / 5)); //Since y velocity is negative, the gravity multiplier becomes smaller with greater speed

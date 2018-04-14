@@ -4,10 +4,11 @@
     <Files>
       <File FileName="Assets\Scripts\Camera\FollowPlayer.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Characters\MainCharacter\MainCharacterControl.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Characters\MainCharacter\MainCharacter.cs" Line="258" Column="22" />
+      <File FileName="Assets\Scripts\Characters\MainCharacter\MainCharacter.cs" Line="324" Column="136" />
       <File FileName="Assets\CrouchedEnemy.cs" Line="1" Column="1" />
       <File FileName="Assets\BulletController.cs" Line="1" Column="1" />
-      <File FileName="Assets\UIManagement.cs" Line="26" Column="121" />
+      <File FileName="Assets\UIManagement.cs" Line="7" Column="44" />
+      <File FileName="Assets\GreatAxe.cs" Line="21" Column="80" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
