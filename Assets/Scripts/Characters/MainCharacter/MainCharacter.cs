@@ -36,7 +36,7 @@ namespace DontTrust.Characters.Main
 		CapsuleCollider m_Capsule; //Character's collider
 		bool m_Crouching; //Crouching flag
 		bool m_WallCollision; //Wall collision flag
-		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127).
+		[HideInInspector] public sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127). Public for other classes to see it, but not serializable.
 
 		/* Methods */
 		void Start() //Initialization method
@@ -101,7 +101,7 @@ namespace DontTrust.Characters.Main
 
 		void ScaleCapsuleForCrouching(bool crouch) //Scales the character collider when it crouches or slides
 		{
-			if (crouch)//(m_IsGrounded && crouch)
+			if (crouch && !m_WallCollision) //Can't crouch while colliding with wall //(m_IsGrounded && crouch)
 			{
 				if (m_Crouching) return;
 				m_Capsule.height = m_Capsule.height / 2f;

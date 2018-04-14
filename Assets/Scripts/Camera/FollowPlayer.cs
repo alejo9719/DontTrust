@@ -21,7 +21,7 @@ public class FollowPlayer : MonoBehaviour {
 
 	void LateUpdate()
 	{
-		character= Player.GetComponent<MainCharacter>();
+		character = Player.GetComponent<MainCharacter>();
 
 		if (!character.m_IsGrounded && (newPosition.x < Player.transform.position.x + MaxZoomOut) ) {
 			newPosition.x += ZoomOutSpeed;
