@@ -36,7 +36,7 @@ namespace DontTrust.Characters.Main
 		CapsuleCollider m_Capsule; //Character's collider
 		bool m_Crouching; //Crouching flag
 		bool m_WallCollision; //Wall collision flag
-		[HideInInspector] public sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127). Public for other classes to see it, but not serializable.
+		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127). Public for other classes to see it, but not serializable.
 
 		/* Methods */
 		void Start() //Initialization method
@@ -55,13 +55,20 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		public void UpdateHealth() //Check the health conditions and update the health indicator in the GUI.
+		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
 		{
+			m_Health -= damage;
 			if(m_Health<=0){
 				m_Health = 0;
 			}
 
 			//Debug.Log("Health = " + m_Health);
+		}
+
+
+		public sbyte GetHealth()
+		{
+			return m_Health;
 		}
 
 
@@ -265,11 +272,11 @@ namespace DontTrust.Characters.Main
 		{
 			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
 				//m_WallCollision = false;
-				InvokeRepeating("makeCollisionFalse", 0.05f, 0); //Delays the turning off of the wall collision flag in order to give the player some time to perform the wall jump.
+				InvokeRepeating("MakeCollisionFalse", 0.05f, 0); //Delays the turning off of the wall collision flag in order to give the player some time to perform the wall jump.
 			}
 		}
 
-		void makeCollisionFalse() //Makes the wall collision flag false. Used to put a delay on this action inside the OnCollisionExit method.
+		void MakeCollisionFalse() //Makes the wall collision flag false. Used to put a delay on this action inside the OnCollisionExit method.
 		{
 			m_WallCollision = false;
 		}

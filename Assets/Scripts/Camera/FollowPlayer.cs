@@ -30,8 +30,8 @@ public class FollowPlayer : MonoBehaviour {
 			newPosition.x -= ZoomOutSpeed * 2;
 		}
 
-		newPosition.y += Player.transform.position.y + offset.y - newPosition.y;
-		newPosition.z += Player.transform.position.z + offset.z - newPosition.z;
+		newPosition.y = Player.transform.position.y + offset.y;
+		newPosition.z = Player.transform.position.z + offset.z;
 		transform.position = newPosition;
 	}
 }

@@ -42,8 +42,6 @@ namespace DontTrust.Characters.Main
 			{
 				m_Jump = !CrossPlatformInputManager.GetButtonUp ("Jump");
 			}*/
-
-			m_Character.UpdateHealth();
         }
 
 

@@ -1,6 +1,10 @@
 # DontTrust
 Introduction to Videogames Development Course Project
 
+# NOTES
+
+Los modelos se deben cargar en .blend, no .obj.
+
 # TODO
 
 Assets:
