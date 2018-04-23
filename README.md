@@ -3,36 +3,37 @@ Introduction to Videogames Development Course Project
 
 # NOTES
 
-Los modelos se deben cargar en .blend, no .obj.
+Models must be loaded in .blend format, not .obj (they will be ignored by git).
 
 # TODO
 
 Assets:
 
-	Models:
-  	Background: Low Poly Mountains
-  	Map Design
-  	Traps
-  	Enemies
-  	Power Ups
-    
-	Textures:
-	Sounds:
+  	- Map Design
+  	- Enemies Models:
+	-- Change crouched enemy to aiming-down-sniper position)
+	-- Turret model
+	- Textures:
+	-- Main Character
+	-- Enemies
+	-Sounds:
+	-- Game music
 
 Programming:
 
-	Camera movement
-	Main Menu
-	Character movement / Animation
-	Enemy IA / Animation
-	Power Ups
-	Traps
-	UI
+	- Finish camera movement
+	- Main Menu
+	- Pause Menu
+	- Enemy IA / Animation:
+	-- Change crouched enemy behaviour along with model
+	-- Turret
+	- Power Ups
+	- Traps
+	- UI
   
-  
- Documento de diseño:
+ Design document:
  
-	Map Sketches
+	- Map Sketches
 	
 # Tutorial:
 

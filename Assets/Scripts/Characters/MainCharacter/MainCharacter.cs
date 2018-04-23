@@ -58,11 +58,12 @@ namespace DontTrust.Characters.Main
 		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
 		{
 			m_Health -= damage;
-			if(m_Health<=0){
+			if(m_Health<=0){ //Health cannot be negative
 				m_Health = 0;
 			}
 
-			//Debug.Log("Health = " + m_Health);
+			Debug.Log("Damage Received: " + damage);
+			Debug.Log("Health = " + m_Health);
 		}
 
 
@@ -261,10 +262,6 @@ namespace DontTrust.Characters.Main
 		{
 			if (col.gameObject.CompareTag ("Wall")) { //Verify wall collision
 				m_WallCollision = true;
-			}
-
-			if (col.gameObject.CompareTag ("Enemy")) {
-				m_Health -= 50; //TEMPORAL
 			}
 		}
 
