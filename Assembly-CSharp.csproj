@@ -58,9 +58,10 @@
      <Compile Include="Assets\Scripts\Characters\CrouchedEnemy.cs" />
      <Compile Include="Assets\Scripts\Characters\MainCharacter\MainCharacter.cs" />
      <Compile Include="Assets\Scripts\Characters\MainCharacter\MainCharacterControl.cs" />
+     <Compile Include="Assets\Scripts\GameManager\AudioManagement.cs" />
+     <Compile Include="Assets\Scripts\GameManager\UIManagement.cs" />
      <Compile Include="Assets\Scripts\Obstacles\BulletController.cs" />
      <Compile Include="Assets\Scripts\Obstacles\GreatAxe.cs" />
-     <Compile Include="Assets\Scripts\UIManagement.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

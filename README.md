@@ -28,7 +28,8 @@ Programming:
 	-- Change crouched enemy behaviour along with model
 	-- Turret
 	- Power Ups
-	- Traps
+	- Obstacles:
+	-- Convert water into "falling" obstacle by putting a trigger collider on it and disabling the Player's collider when entering on it so he falls.
 	- UI
   
  Design document:
