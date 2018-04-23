@@ -407,10 +407,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728eedb88ab494f4b95a2d3a56a72ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player: {fileID: 1663695207}
+  m_Player: {fileID: 1663695207}
   offset: {x: 26, y: 4.8, z: 0}
   ZoomOutSpeed: 0.08
   MaxZoomOut: 30
+  m_CameraRotation: 1
+  m_RotationOffset: {x: 0, y: 3, z: 0}
+  m_MaxHorizontalDistance: 8
+  m_MaxVerticalDistance: 2.5
+  cameraAcceleration: 0.2
 --- !u!81 &390177211
 AudioListener:
   m_ObjectHideFlags: 0
@@ -2667,7 +2672,7 @@ Transform:
   m_GameObject: {fileID: 1937132208}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -150.509, y: -157, z: 605}
-  m_LocalScale: {x: 50, y: 1, z: 200}
+  m_LocalScale: {x: 50, y: 1, z: 250}
   m_Children: []
   m_Father: {fileID: 821867062}
   m_RootOrder: 6
