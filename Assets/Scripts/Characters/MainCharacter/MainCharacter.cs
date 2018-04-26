@@ -16,7 +16,7 @@ namespace DontTrust.Characters.Main
 		[SerializeField] float m_RunCycleLegOffset = 0.2f; //Specific to the character in sample assets, will need to be modified to work with others
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
-		[SerializeField] float m_GroundCheckDistance = 0.1f;
+		[SerializeField] float m_GroundCheckDistance = 0.2f;
 
 		/* Public fields */
 		public bool m_IsGrounded; //Flag to indicate if the character is touching the ground. Public in order for other objects to be able to see it.
@@ -323,25 +323,33 @@ namespace DontTrust.Characters.Main
 		void CheckGroundStatus() //Checks if the character is on ground.
 		{
 			RaycastHit hitInfo;
+			float upOffset = 0.3f;
+			float forwardOffset = 1.2f;
+			float backOffset = 0.7f;
 #if UNITY_EDITOR
-			// helper to visualise the ground check ray in the scene view
-			Debug.DrawLine(transform.position + (Vector3.up * 0.1f), transform.position + (Vector3.up * 0.1f) + (Vector3.down * m_GroundCheckDistance)); //If in the editor, draw the raycast line
+			// Helper to visualise the ground check rays in the scene view
+			//Center ray
+			Debug.DrawLine(transform.position + (Vector3.up * upOffset), transform.position + (Vector3.up * upOffset) + (Vector3.down * m_GroundCheckDistance)); //If in the editor, draw the raycast line
+			//Front ray
+			Debug.DrawLine(transform.position + (Vector3.up * upOffset) + (Vector3.forward * forwardOffset), transform.position + (Vector3.up * upOffset) + (Vector3.forward * forwardOffset) + (Vector3.down * m_GroundCheckDistance));
+			//Back ray
+			Debug.DrawLine(transform.position + (Vector3.up * upOffset) + (Vector3.back * backOffset), transform.position + (Vector3.up * upOffset) + (Vector3.back * backOffset) + (Vector3.down * m_GroundCheckDistance));
 #endif
 			// 0.1f is a small offset to start the ray from inside the character
 			// it is also good to note that the transform position in the sample assets is at the base of the character
-			if (Physics.Raycast(transform.position + (Vector3.up * 0.1f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+			if (Physics.Raycast(transform.position + (Vector3.up * upOffset), Vector3.down, out hitInfo, m_GroundCheckDistance)) //Ray from the center of the character
 			{
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
 				m_Animator.applyRootMotion = true;
 			}
-			else if (Physics.Raycast(transform.position + (Vector3.up * 0.1f) + (Vector3.forward * 0.5f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+			else if (Physics.Raycast(transform.position + (Vector3.up * upOffset) + (Vector3.forward * forwardOffset), Vector3.down, out hitInfo, m_GroundCheckDistance)) //Ray from the front of the character
 			{
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
 				m_Animator.applyRootMotion = true;
 			}
-			else if (Physics.Raycast(transform.position + (Vector3.up * 0.1f) + (Vector3.back * 0.5f), Vector3.down, out hitInfo, m_GroundCheckDistance))
+			else if (Physics.Raycast(transform.position + (Vector3.up * upOffset) + (Vector3.back * backOffset), Vector3.down, out hitInfo, m_GroundCheckDistance)) //Ray from the back of the character
 			{
 				m_GroundNormal = hitInfo.normal;
 				m_IsGrounded = true;
