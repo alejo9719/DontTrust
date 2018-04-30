@@ -65,12 +65,17 @@ namespace DontTrust.Characters.Main
 			m_Health -= damage;
 			if(m_Health<=0){ //Health cannot be negative
 				m_Health = 0; //Health cannot be lower than zero
-				m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
-				m_Health = 100; //TEMPORAL
+				Die();
 			}
 
-			Debug.Log("Damage Received: " + damage);
-			Debug.Log("Health = " + m_Health);
+			//Debug.Log("Damage Received: " + damage);
+			//Debug.Log("Health = " + m_Health);
+		}
+
+		public void Die()
+		{
+			m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
+			m_Health = 100; //TEMPORAL
 		}
 
 

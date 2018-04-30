@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DontTrust.Characters.Main;
+using DontTrust.GameManager;
 
 public class MineExplosion : MonoBehaviour {
 
@@ -13,11 +14,14 @@ public class MineExplosion : MonoBehaviour {
 
 	private MainCharacter m_MCharacter; // Game Character
 	private Rigidbody m_Rigidbody; // Game Character's rigid body
+	private GameObject m_GameManager;
+	private Mechanics m_ManagerMechanics;
 
 	// Use this for initialization
 	void Start () {
 		GetComponent<ParticleSystem>().Stop (); // Stop the animation so it doesn't play until the soldier collides with it
-
+		m_GameManager = GameObject.FindWithTag ("GameController");
+		m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
 	}
 	
 	// Update is called once per frame
@@ -33,17 +37,16 @@ public class MineExplosion : MonoBehaviour {
 			m_Rigidbody = other.gameObject.GetComponent<Rigidbody>(); //Get the Rigid Body of the MainCharacter component (class) of the player's gameObject
 			m_Rigidbody.AddForce (PushForce, ForceMode.Impulse);
 
-			ParticleSystem particles = GetComponent<ParticleSystem> ();
-			float particlesDuration = particles.startLifetime + particles.duration;
+			ParticleSystem particles = GetComponent<ParticleSystem> (); //Get explosion particle system
+			//float particlesDuration = particles.startLifetime + particles.duration;
+			InvokeRepeating("Deactivate", particles.startLifetime, 0); //Delays the mine gameobject deactivation until the particle system finishes playing.
 			//Destroy (GetComponent<ParticleSystem>()); // End explosion animation
-			//gameObject.SetActive(false); // End explosion animation
-			//InvokeRepeating("deactivateMine", particles.duration, 0); //Delays the turning off of the wall collision flag in order to give the player some time to perform the wall jump.
-			Mine.GetComponent<MeshRenderer>().enabled = false; //Hide Mesh after collision for the mine to disappear
-			//Mine.SetActive(false);
+			//Mine.GetComponent<MeshRenderer>().enabled = false; //Hide Mesh after collision for the mine to disappear
 		}
 	}
 
-	void deactivateMine(){
+	void Deactivate(){
 		Mine.SetActive(false);
+		m_ManagerMechanics.AddInactiveObstacle (Mine);
 	}
 }
