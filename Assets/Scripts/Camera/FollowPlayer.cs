@@ -30,11 +30,13 @@ public class FollowPlayer : MonoBehaviour {
 		character = m_Player.GetComponent<MainCharacter>();
 		newPosition = transform.position;
 
-		if (!character.m_IsGrounded && (newPosition.x < m_Player.transform.position.x + MaxZoomOut) ) {
+		if (!character.m_IsGrounded && (newPosition.x < m_Player.transform.position.x + MaxZoomOut)) {
 			newPosition.x += ZoomOutSpeed;
-		}
-		else if (newPosition.x >= m_Player.transform.position.x + offset.x) {
+		} else if (newPosition.x > m_Player.transform.position.x + offset.x) {
 			newPosition.x -= ZoomOutSpeed * 2;
+		}
+		else {
+			newPosition.x = m_Player.transform.position.x + offset.x;
 		}
 
 		if (!m_CameraRotation) {
