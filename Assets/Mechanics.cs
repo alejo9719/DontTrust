@@ -29,6 +29,11 @@ namespace DontTrust.GameManager
 		public void LoadCheckpoint()
 		{
 			m_Player.transform.position = m_LastCheckpoint.GetComponent<Checkpoint>().getPosition();
+			GameObject[] obstacles = GameObject.FindGameObjectsWithTag("Obstacle"); //Get level obstacles
+
+			foreach (GameObject obstacle in obstacles) { //Reactivate obstacles
+				obstacle.SetActive(true);
+			}
 		}
 	}
 }
