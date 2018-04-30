@@ -51,7 +51,7 @@ namespace DontTrust.Characters.Main
             // read inputs
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             //float v = CrossPlatformInputManager.GetAxis("Vertical");
-            bool crouch = Input.GetKey(KeyCode.C);
+			bool crouch = Input.GetKey(KeyCode.C) || Input.GetKey(KeyCode.S);
 
             // calculate move direction to pass to character
             /*if (m_Cam != null)

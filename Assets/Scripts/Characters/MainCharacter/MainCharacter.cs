@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using DontTrust.GameManager;
 
 namespace DontTrust.Characters.Main
 {
@@ -37,6 +38,8 @@ namespace DontTrust.Characters.Main
 		bool m_Crouching; //Crouching flag
 		bool m_WallCollision; //Wall collision flag
 		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127). Public for other classes to see it, but not serializable.
+		private GameObject m_GameManager;
+		private Mechanics m_ManagerMechanics;
 
 		/* Methods */
 		void Start() //Initialization method
@@ -52,6 +55,8 @@ namespace DontTrust.Characters.Main
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
 
 			m_Health = 100;
+			m_GameManager = GameObject.FindWithTag ("GameController");
+			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
 		}
 
 
@@ -59,7 +64,9 @@ namespace DontTrust.Characters.Main
 		{
 			m_Health -= damage;
 			if(m_Health<=0){ //Health cannot be negative
-				m_Health = 0;
+				m_Health = 0; //Health cannot be lower than zero
+				m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
+				m_Health = 100; //TEMPORAL
 			}
 
 			Debug.Log("Damage Received: " + damage);
