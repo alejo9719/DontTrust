@@ -7,6 +7,7 @@ using DontTrust.GameManager;
 public class MineExplosion : MonoBehaviour {
 
 	[SerializeField] private sbyte m_Damage = 10;
+	[SerializeField] private float m_PushMultiplier = 30f;
 
 	public AudioClip Explosion; // Explosion sound
 
@@ -33,7 +34,8 @@ public class MineExplosion : MonoBehaviour {
 			Mine = transform.parent.gameObject;
 			m_MCharacter = other.gameObject.GetComponent<MainCharacter>(); //Get the MainCharacter component (class) of the player's gameObject
 			m_MCharacter.TakeDamage(m_Damage); //Decrease player's health when colliding with it
-			Vector3 PushForce = new Vector3(0, 12f*2, -70);
+			Vector3 PushForce = ((other.transform.position - transform.position) + Vector3.up) * m_PushMultiplier; //Apply knockback force to player in the opposite direction (vector substraction)
+																													//add an upwards force to give it a better effect.
 			m_Rigidbody = other.gameObject.GetComponent<Rigidbody>(); //Get the Rigid Body of the MainCharacter component (class) of the player's gameObject
 			m_Rigidbody.AddForce (PushForce, ForceMode.Impulse);
 
