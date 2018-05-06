@@ -6,6 +6,7 @@ using DontTrust.Characters.Main;
 public class GreatAxe : MonoBehaviour {
 
 	[SerializeField] private sbyte m_Damage = 20; //MODIFICAR DE ACUERDO A DOC DE DISENIO
+	[SerializeField] private AudioClip m_CutSound;
 	private MainCharacter m_MCharacter;
 
 	// Use this for initialization
@@ -24,6 +25,7 @@ public class GreatAxe : MonoBehaviour {
 		if (col.gameObject.CompareTag ("Player")) {
 			m_MCharacter = col.gameObject.GetComponent<MainCharacter>(); //Get the MainCharacter component (class) of the player's gameObject
 			m_MCharacter.TakeDamage(m_Damage); //Decrease player's health when colliding with it
+			GetComponent<AudioSource>().PlayOneShot (m_CutSound); // Play blade slash sound
 		}
 	}
 }

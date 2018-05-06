@@ -9,7 +9,7 @@ public class MineExplosion : MonoBehaviour {
 	[SerializeField] private sbyte m_Damage = 10;
 	[SerializeField] private float m_PushMultiplier = 30f;
 
-	public AudioClip Explosion; // Explosion sound
+	public AudioClip m_Explosion; // Explosion sound
 
 	private GameObject Mine; // Land Mine
 
@@ -29,7 +29,7 @@ public class MineExplosion : MonoBehaviour {
 	void OnTriggerEnter (Collider other) {
 		if (other.tag == "Player") {
 			GetComponent<ParticleSystem>().Play (); // Start the animation after the collision
-			GetComponent<AudioSource>().PlayOneShot (Explosion); // Play sound for the explosion
+			GetComponent<AudioSource>().PlayOneShot (m_Explosion); // Play sound for the explosion
 			//Mine = GameObject.Find ("Mine"); // Find Game Object Mine
 			Mine = transform.parent.gameObject;
 			m_MCharacter = other.gameObject.GetComponent<MainCharacter>(); //Get the MainCharacter component (class) of the player's gameObject

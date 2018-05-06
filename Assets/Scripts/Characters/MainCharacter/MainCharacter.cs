@@ -40,6 +40,7 @@ namespace DontTrust.Characters.Main
 		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127). Public for other classes to see it, but not serializable.
 		private GameObject m_GameManager;
 		private Mechanics m_ManagerMechanics;
+		private MainCharacterAudio m_AudioMethods;
 
 		/* Methods */
 		void Start() //Initialization method
@@ -53,15 +54,18 @@ namespace DontTrust.Characters.Main
 
 			m_Rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 			m_OrigGroundCheckDistance = m_GroundCheckDistance;
+			m_IsGrounded = true; //Assumes the character originally on ground (Can change when it checks grounded status)
 
 			m_Health = 100;
 			m_GameManager = GameObject.FindWithTag ("GameController");
 			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
+			m_AudioMethods = GetComponent<MainCharacterAudio> ();
 		}
 
 
 		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
 		{
+			m_AudioMethods.PlayDamageSound(); // Play damage sound
 			m_Health -= damage;
 			if(m_Health<=0){ //Health cannot be negative
 				m_Health = 0; //Health cannot be lower than zero
@@ -347,6 +351,11 @@ namespace DontTrust.Characters.Main
 			//Back ray
 			Debug.DrawLine(transform.position + (Vector3.up * upOffset) + (Vector3.back * backOffset), transform.position + (Vector3.up * upOffset) + (Vector3.back * backOffset) + (Vector3.down * m_GroundCheckDistance));
 #endif
+			bool playLandingSound = false;;
+			if (!m_IsGrounded) { //Check if character is falling
+				playLandingSound = true;
+			}
+
 			// 0.1f is a small offset to start the ray from inside the character
 			// it is also good to note that the transform position in the sample assets is at the base of the character
 			if (Physics.Raycast(transform.position + (Vector3.up * upOffset), Vector3.down, out hitInfo, m_GroundCheckDistance)) //Ray from the center of the character
@@ -372,6 +381,10 @@ namespace DontTrust.Characters.Main
 				m_IsGrounded = false;
 				m_GroundNormal = Vector3.up;
 				m_Animator.applyRootMotion = false;
+			}
+
+			if (m_IsGrounded && playLandingSound) { //Check if character just landed (was falling and now is on ground)
+				m_AudioMethods.PlayLandingSound(); // Play landing sound
 			}
 		}
 	}

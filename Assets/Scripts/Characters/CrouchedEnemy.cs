@@ -7,6 +7,7 @@ public class CrouchedEnemy : MonoBehaviour
 {
 	[SerializeField] float m_AimDistance = 80f;
 	[SerializeField] private sbyte m_Damage = 50; //MODIFICAR DE ACUERDO A DOC DE DISENIO
+	[SerializeField] private AudioClip m_ShotSound; // Shooting sound
 	public GameObject m_bulletPrefab;
 	public float m_fireRate = 1f;
 
@@ -42,6 +43,7 @@ public class CrouchedEnemy : MonoBehaviour
 				Quaternion.Euler(90f, 0f, 0f) ) as GameObject; //Instantiate new "prefab" object (bullet) on the specified position and rotation
 			//bullet.name = "Bullet" + count++;
 			bullet.GetComponent<Rigidbody>().AddForce(-Vector3.forward*55, ForceMode.Impulse); //Bullet is shot with an impulse force of magnitude 55
+			GetComponent<AudioSource>().PlayOneShot (m_ShotSound); // Play shot sound
 			Destroy(bullet, 2f); //Destroy the bullet 2 seconds later
 
 		}
