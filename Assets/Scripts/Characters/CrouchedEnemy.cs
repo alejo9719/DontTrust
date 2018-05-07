@@ -6,7 +6,7 @@ using DontTrust.Characters.Main;
 public class CrouchedEnemy : MonoBehaviour
 {
 	[SerializeField] float m_AimDistance = 80f;
-	[SerializeField] private sbyte m_Damage = 50; //MODIFICAR DE ACUERDO A DOC DE DISENIO
+	//[SerializeField] private sbyte m_Damage = 50;
 	[SerializeField] private AudioClip m_ShotSound; // Shooting sound
 	public GameObject m_bulletPrefab;
 	public float m_fireRate = 1f;
@@ -49,11 +49,11 @@ public class CrouchedEnemy : MonoBehaviour
 		}
 	}
 
-	public void OnCollisionEnter(Collision col) //Collision with another object is detected
+	/*public void OnCollisionEnter(Collision col) //Collision with another object is detected
 	{
 		if (col.gameObject.CompareTag ("Player")) {
 			m_MCharacter = col.gameObject.GetComponent<MainCharacter>(); //Get the MainCharacter component (class) of the player's gameObject
 			m_MCharacter.TakeDamage(m_Damage); //Decrease player's health when colliding with it
 		}
-	}
+	}*/
 }
