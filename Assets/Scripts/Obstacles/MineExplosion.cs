@@ -11,7 +11,7 @@ public class MineExplosion : MonoBehaviour {
 
 	public AudioClip m_Explosion; // Explosion sound
 
-	private GameObject Mine; // Land Mine
+	private GameObject m_Parent; // Land Mine
 
 	private MainCharacter m_MCharacter; // Game Character
 	private Rigidbody m_Rigidbody; // Game Character's rigid body
@@ -23,6 +23,9 @@ public class MineExplosion : MonoBehaviour {
 		GetComponent<ParticleSystem>().Stop (); // Stop the animation so it doesn't play until the soldier collides with it
 		m_GameManager = GameObject.FindWithTag ("GameController");
 		m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
+		m_Parent = transform.parent.gameObject;
+
+		m_ManagerMechanics.AddRespawnableObstacle (m_Parent); //Adds the parent object to the list of gameObjects to be reactivated on respawn
 	}
 	
 	// Update is called once per frame
@@ -30,8 +33,7 @@ public class MineExplosion : MonoBehaviour {
 		if (other.tag == "Player") {
 			GetComponent<ParticleSystem>().Play (); // Start the animation after the collision
 			GetComponent<AudioSource>().PlayOneShot (m_Explosion); // Play sound for the explosion
-			//Mine = GameObject.Find ("Mine"); // Find Game Object Mine
-			Mine = transform.parent.gameObject;
+
 			m_MCharacter = other.gameObject.GetComponent<MainCharacter>(); //Get the MainCharacter component (class) of the player's gameObject
 			m_MCharacter.TakeDamage(m_Damage); //Decrease player's health when colliding with it
 			Vector3 PushForce = ((other.transform.position - transform.position) + Vector3.up) * m_PushMultiplier; //Apply knockback force to player in the opposite direction (vector substraction)
@@ -40,15 +42,15 @@ public class MineExplosion : MonoBehaviour {
 			m_Rigidbody.AddForce (PushForce, ForceMode.Impulse);
 
 			ParticleSystem particles = GetComponent<ParticleSystem> (); //Get explosion particle system
-			//float particlesDuration = particles.startLifetime + particles.duration;
-			InvokeRepeating("Deactivate", particles.startLifetime, 0); //Delays the mine gameobject deactivation until the particle system finishes playing.
+
+			InvokeRepeating("Deactivate", particles.main.startLifetime.constant, 0); //Delays the mine gameobject deactivation until the particle system finishes playing.
 			//Destroy (GetComponent<ParticleSystem>()); // End explosion animation
 			//Mine.GetComponent<MeshRenderer>().enabled = false; //Hide Mesh after collision for the mine to disappear
 		}
 	}
 
 	void Deactivate(){
-		Mine.SetActive(false);
-		m_ManagerMechanics.AddInactiveObstacle (Mine);
+		//Deactivate parent gameobject
+		m_Parent.SetActive(false);
 	}
 }

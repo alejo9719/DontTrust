@@ -9,7 +9,7 @@ namespace DontTrust.GameManager
 		[SerializeField] private GameObject m_InitialCheckpoint;
 		private GameObject m_LastCheckpoint;
 		private GameObject m_Player;
-		public List<GameObject> m_InactiveObstacles;
+		public List<GameObject> m_RespawnableObstacles;
 
 		// Use this for initialization
 		void Start () {
@@ -31,15 +31,15 @@ namespace DontTrust.GameManager
 		{
 			m_Player.transform.position = m_LastCheckpoint.GetComponent<Checkpoint>().getPosition();
 
-			foreach (GameObject obstacle in m_InactiveObstacles) { //Reactivate obstacles
+			foreach (GameObject obstacle in m_RespawnableObstacles) { //Reactivate obstacles
 				Debug.Log(obstacle.name);
 				obstacle.SetActive(true);
 			}
 		}
 
-		public void AddInactiveObstacle(GameObject obstacle)
+		public void AddRespawnableObstacle(GameObject obstacle)
 		{
-			m_InactiveObstacles.Add (obstacle);
+			m_RespawnableObstacles.Add (obstacle);
 		}
 	}
 }

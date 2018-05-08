@@ -37,7 +37,7 @@ public class CrouchedEnemy : MonoBehaviour
 
 		if ( (Time.time > m_nextFire) && m_shoot ) //Fire time is up and the target is in shoot range
 		{
-			Debug.Log ("Dispara");
+			//Debug.Log ("Dispara");
 			m_nextFire = Time.time + m_fireRate; //Set the next shot firing time
 			GameObject bullet = Instantiate( m_bulletPrefab, new Vector3(transform.position.x-0.5f, transform.position.y+3.2f, transform.position.z-4.5f), 
 				Quaternion.Euler(90f, 0f, 0f) ) as GameObject; //Instantiate new "prefab" object (bullet) on the specified position and rotation
