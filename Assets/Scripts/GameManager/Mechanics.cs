@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DontTrust.Obstacles;
 
 namespace DontTrust.GameManager
 {
@@ -33,7 +34,8 @@ namespace DontTrust.GameManager
 
 			foreach (GameObject obstacle in m_RespawnableObstacles) { //Reactivate obstacles
 				Debug.Log(obstacle.name);
-				obstacle.SetActive(true);
+				//obstacle.SetActive(true);
+				obstacle.GetComponent<ObstacleClass>().Respawn();
 			}
 		}
 
