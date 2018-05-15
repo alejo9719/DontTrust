@@ -125,7 +125,7 @@ namespace DontTrust.Characters.Main
 
 		void ScaleCapsuleForCrouching(bool crouch) //Scales the character collider when it crouches or slides
 		{
-			if (crouch && !m_WallCollision) //Can't crouch while colliding with wall //(m_IsGrounded && crouch)
+			if (crouch && !m_WallCollision && Mathf.Abs(m_Rigidbody.velocity.z)>15) //Can't slide when colliding with a wall or when going too slow //(m_IsGrounded && crouch)
 			{
 				if (m_Crouching) return;
 				m_Capsule.height = m_Capsule.height / 2f;
@@ -152,10 +152,14 @@ namespace DontTrust.Characters.Main
 			// prevent standing up in crouch-only zones
 			if (!m_Crouching)
 			{
-				Ray crouchRay = new Ray(m_Rigidbody.position + Vector3.up * m_Capsule.radius * k_Half, Vector3.up);
-				float crouchRayLength = m_CapsuleHeight - m_Capsule.radius * k_Half;
+				Vector3 crouchRayOrigin = transform.TransformPoint (m_Capsule.center) + Vector3.up * m_Capsule.radius * k_Half;
+				float crouchRayLength = transform.lossyScale.y * m_CapsuleHeight/2;
+				Ray crouchRay = new Ray(crouchRayOrigin, Vector3.up);
+				Debug.DrawLine(crouchRayOrigin, crouchRayOrigin + Vector3.up * crouchRayLength); //If in the editor, draw the raycast line
 				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
 				{
+					m_Capsule.height = m_Capsule.height / 2f;
+					m_Capsule.center = m_Capsule.center / 2f;
 					m_Crouching = true;
 				}
 			}

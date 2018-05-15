@@ -33,8 +33,7 @@ namespace DontTrust.GameManager
 			m_Player.transform.position = m_LastCheckpoint.GetComponent<Checkpoint>().getPosition();
 
 			foreach (GameObject obstacle in m_RespawnableObstacles) { //Reactivate obstacles
-				Debug.Log(obstacle.name);
-				//obstacle.SetActive(true);
+				//Debug.Log(obstacle.name);
 				obstacle.GetComponent<ObstacleClass>().Respawn();
 			}
 		}

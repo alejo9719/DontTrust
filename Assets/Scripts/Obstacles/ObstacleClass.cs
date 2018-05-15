@@ -23,7 +23,7 @@ namespace DontTrust.Obstacles
 
 		public virtual void Respawn () {
 			gameObject.SetActive(true);
-			Debug.Log ("Parent respawn");
+			//Debug.Log ("Obstacle respawn");
 		}
 	}
 }

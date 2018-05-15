@@ -59,7 +59,7 @@ namespace DontTrust.Obstacles
 
 		public override void Respawn () { //Restart the mine state
 			m_Parent.SetActive(true);
-			Debug.Log ("Mine respawn");
+			//Debug.Log ("Mine respawn");
 		}
 	}
 }
