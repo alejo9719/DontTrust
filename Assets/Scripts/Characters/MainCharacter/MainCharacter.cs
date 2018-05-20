@@ -65,18 +65,19 @@ namespace DontTrust.Characters.Main
 
 		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
 		{
-			m_AudioMethods.PlayDamageSound(); // Play damage sound
-			m_Health -= damage;
-			if(m_Health<=0){ //Health cannot be negative
+			if (damage>5) //Sound will be played only if damage is greater than 5
+				m_AudioMethods.PlayDamageSound(); // Play damage sound
+			m_Health -= damage; //Reduce health
+			if(m_Health<=0){ //Character is dead
 				m_Health = 0; //Health cannot be lower than zero
-				Die();
+				Die(); //Call die method
 			}
 
 			//Debug.Log("Damage Received: " + damage);
 			//Debug.Log("Health = " + m_Health);
 		}
 
-		public void Die()
+		public void Die() //Die function //FALTA IMPLEMENTAR SISTEMA DE VIDAS
 		{
 			m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
 			m_Health = 100; //TEMPORAL
@@ -150,7 +151,7 @@ namespace DontTrust.Characters.Main
 		void PreventStandingInLowHeadroom() //Prevents the character to stand up when it's below a collider lower than the character height
 		{
 			// prevent standing up in crouch-only zones
-			if (!m_Crouching)
+			if (!m_Crouching && m_IsGrounded)
 			{
 				Vector3 crouchRayOrigin = transform.TransformPoint (m_Capsule.center) + Vector3.up * m_Capsule.radius * k_Half;
 				float crouchRayLength = transform.lossyScale.y * m_CapsuleHeight/2;
