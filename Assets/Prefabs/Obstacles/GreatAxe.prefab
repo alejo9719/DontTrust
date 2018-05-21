@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23699328977862056}
   m_Layer: 0
   m_Name: GreatAxeRing_Untitled_002
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4017121105402806}
   m_Layer: 0
   m_Name: GreatAxe
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 82174222440115484}
   m_Layer: 0
   m_Name: GreatAxe
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,9 +109,10 @@ GameObject:
   - component: {fileID: 33788347439331472}
   - component: {fileID: 23260112330306894}
   - component: {fileID: 64558110356003822}
+  - component: {fileID: 65541955520308766}
   m_Layer: 0
   m_Name: GreatAxe_Untitled_001
-  m_TagString: Untagged
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -477,6 +478,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!65 &65541955520308766
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1931658852650064}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 4.9, y: 2.3, z: 0.7896662}
+  m_Center: {x: -0.0000076293945, y: -3.5, z: -5.736021e-14}
 --- !u!65 &65902957389643908
 BoxCollider:
   m_ObjectHideFlags: 1

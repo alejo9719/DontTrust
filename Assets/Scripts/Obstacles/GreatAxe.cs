@@ -8,7 +8,7 @@ namespace DontTrust.Obstacles
 {
 	public class GreatAxe : ObstacleClass {
 
-		[SerializeField] private sbyte m_Damage = 20; //MODIFICAR DE ACUERDO A DOC DE DISENIO
+		[SerializeField] private sbyte m_Damage = 20;
 		[SerializeField] private AudioClip m_CutSound;
 		private MainCharacter m_MCharacter;
 

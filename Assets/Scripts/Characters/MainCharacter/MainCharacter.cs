@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+using System.Collections;
 using DontTrust.GameManager;
 
 namespace DontTrust.Characters.Main
@@ -41,6 +42,7 @@ namespace DontTrust.Characters.Main
 		private GameObject m_GameManager;
 		private Mechanics m_ManagerMechanics;
 		private MainCharacterAudio m_AudioMethods;
+		private float m_OrigMoveSpdMultiplier;
 
 		/* Methods */
 		void Start() //Initialization method
@@ -60,33 +62,8 @@ namespace DontTrust.Characters.Main
 			m_GameManager = GameObject.FindWithTag ("GameController");
 			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
 			m_AudioMethods = GetComponent<MainCharacterAudio> ();
-		}
 
-
-		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
-		{
-			if (damage>5) //Sound will be played only if damage is greater than 5
-				m_AudioMethods.PlayDamageSound(); // Play damage sound
-			m_Health -= damage; //Reduce health
-			if(m_Health<=0){ //Character is dead
-				m_Health = 0; //Health cannot be lower than zero
-				Die(); //Call die method
-			}
-
-			//Debug.Log("Damage Received: " + damage);
-			//Debug.Log("Health = " + m_Health);
-		}
-
-		public void Die() //Die function //FALTA IMPLEMENTAR SISTEMA DE VIDAS
-		{
-			m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
-			m_Health = 100; //TEMPORAL
-		}
-
-
-		public sbyte GetHealth()
-		{
-			return m_Health;
+			m_OrigMoveSpdMultiplier = m_MoveSpeedMultiplier;
 		}
 
 
@@ -151,17 +128,20 @@ namespace DontTrust.Characters.Main
 		void PreventStandingInLowHeadroom() //Prevents the character to stand up when it's below a collider lower than the character height
 		{
 			// prevent standing up in crouch-only zones
-			if (!m_Crouching && m_IsGrounded)
+			if (!m_Crouching && m_IsGrounded) //ARREGLAR PARA OBSTACULOS
 			{
 				Vector3 crouchRayOrigin = transform.TransformPoint (m_Capsule.center) + Vector3.up * m_Capsule.radius * k_Half;
 				float crouchRayLength = transform.lossyScale.y * m_CapsuleHeight/2;
 				Ray crouchRay = new Ray(crouchRayOrigin, Vector3.up);
 				Debug.DrawLine(crouchRayOrigin, crouchRayOrigin + Vector3.up * crouchRayLength); //If in the editor, draw the raycast line
-				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
+				RaycastHit hit; //Hit object info returned by spherecast
+				if (Physics.SphereCast(crouchRay, m_Capsule.radius * k_Half, out hit, crouchRayLength, Physics.AllLayers, QueryTriggerInteraction.Ignore))
 				{
-					m_Capsule.height = m_Capsule.height / 2f;
-					m_Capsule.center = m_Capsule.center / 2f;
-					m_Crouching = true;
+					if (hit.transform.gameObject.tag != "Obstacle") { //Mustn't crouch when the "low headroom" is an obstacle (e.g. Great Axe)
+						m_Capsule.height = m_Capsule.height / 2f;
+						m_Capsule.center = m_Capsule.center / 2f;
+						m_Crouching = true;
+					}
 				}
 			}
 		}
@@ -392,5 +372,62 @@ namespace DontTrust.Characters.Main
 				m_AudioMethods.PlayLandingSound(); // Play landing sound
 			}
 		}
+
+
+		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
+		{
+			if (damage>5) //Sound will be played only if damage is greater than 5
+				m_AudioMethods.PlayDamageSound(); // Play damage sound
+			m_Health -= damage; //Reduce health
+			if(m_Health<=0){ //Character is dead
+				m_Health = 0; //Health cannot be lower than zero
+				Die(); //Call die method
+			}
+
+			//Debug.Log("Damage Received: " + damage);
+			//Debug.Log("Health = " + m_Health);
+		}
+
+		public void Die() //Die function //FALTA IMPLEMENTAR SISTEMA DE VIDAS
+		{
+			m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
+			m_Health = 100; //TEMPORAL
+		}
+
+
+		public sbyte GetHealth()
+		{
+			return m_Health;
+		}
+
+
+		public void ActivatePowerUp(sbyte powerID) //Activates the specified powerup
+		{
+			switch (powerID)
+			{
+			case 1: //Energy Drink
+				m_MoveSpeedMultiplier = m_OrigMoveSpdMultiplier * 1.1f; //Increase speed by 10%
+				StartCoroutine (DeactivatePowerUp (1));
+				break;
+			default:
+				break;
+			}
+			print ("PowerUp "+ powerID + " activated"); //Log activated powerup
+		}
+
+		IEnumerator DeactivatePowerUp(sbyte powerID)
+		{
+			switch (powerID)
+			{
+			case 1: //Energy Drink
+				yield return new WaitForSeconds(1.2f); //Delays the powerup deactivation for 1.2s
+				m_MoveSpeedMultiplier = m_OrigMoveSpdMultiplier; //Restore speed
+				break;
+			default:
+				break;
+			}
+			print ("PowerUp "+ powerID + " deactivated"); //Log deactivated powerup
+		}
+
 	}
 }
