@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DontTrust.Characters.Main;
 using DontTrust.GameManager;
-using DontTrust.Obstacles;
 
 namespace DontTrust.Obstacles
 {
@@ -14,7 +13,7 @@ namespace DontTrust.Obstacles
 		[SerializeField] private sbyte m_MaxDamage = 50; //MODIFICAR DE ACUERDO A DOC DE DISENIO
 		[SerializeField] private AudioClip m_RollSound;
 		[Range(0f, 1f)][SerializeField] float m_SoundVolume = 0.7f;
-		private MainCharacter m_MCharacter;
+		private MainCharacter m_MCharacter; //PONER EN CLASE PADRE
 		private Rigidbody m_Rigidbody;
 		private GameObject m_GameManager;
 		private Mechanics m_ManagerMechanics;

@@ -42,6 +42,9 @@ namespace DontTrust.Characters.Main
 			{
 				m_Jump = !CrossPlatformInputManager.GetButtonUp ("Jump");
 			}*/
+
+			if (Input.GetKey (KeyCode.K)) //Kills the character
+				m_Character.Die ();
         }
 
 

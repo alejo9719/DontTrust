@@ -4,9 +4,9 @@ using UnityEngine;
 using DontTrust.Characters.Main;
 
 public class EnergyDrink : MonoBehaviour {
-	[SerializeField] sbyte m_PowerID=1;
+	[SerializeField] private sbyte m_PowerID=1;
 
-	MainCharacter m_MainChar;
+	private MainCharacter m_MainChar;
 
 	// Use this for initialization
 	void Start () {

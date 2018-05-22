@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DontTrust.Characters.Main;
 using DontTrust.GameManager;
-using DontTrust.Obstacles;
 
 namespace DontTrust.Obstacles
 {

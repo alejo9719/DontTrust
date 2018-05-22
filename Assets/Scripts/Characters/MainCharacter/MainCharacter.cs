@@ -390,6 +390,7 @@ namespace DontTrust.Characters.Main
 
 		public void Die() //Die function //FALTA IMPLEMENTAR SISTEMA DE VIDAS
 		{
+			m_Rigidbody.velocity = Vector3.zero; //Stop character
 			m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
 			m_Health = 100; //TEMPORAL
 		}
@@ -407,7 +408,7 @@ namespace DontTrust.Characters.Main
 			{
 			case 1: //Energy Drink
 				m_MoveSpeedMultiplier = m_OrigMoveSpdMultiplier * 1.1f; //Increase speed by 10%
-				StartCoroutine (DeactivatePowerUp (1));
+				StartCoroutine (DeactivatePowerUp (1)); //Call power deactivation (delayed inside the method)
 				break;
 			default:
 				break;

@@ -1,6 +1,7 @@
 fileFormatVersion: 2
-guid: 8e3ff3e27ca4bc54dda56e89e0550dfa
-timeCreated: 18446744011573954816
+guid: ccfe2be5121464349adab80f5bc01a12
+timeCreated: 1526949389
+licenseType: Free
 TextureImporter:
   fileIDToRecycleName: {}
   externalObjects: {}
@@ -14,29 +15,29 @@ TextureImporter:
     borderMipMap: 0
     mipMapsPreserveCoverage: 0
     alphaTestReferenceValue: 0.5
-    mipMapFadeDistanceStart: 2
+    mipMapFadeDistanceStart: 1
     mipMapFadeDistanceEnd: 3
   bumpmap:
     convertToNormalMap: 0
     externalNormalMap: 0
-    heightScale: 0.1
+    heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
-  grayScaleToAlpha: 1
+  grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
   seamlessCubemap: 0
-  textureFormat: -1
-  maxTextureSize: 256
+  textureFormat: 1
+  maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
-    aniso: 1
-    mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
-  nPOTScale: 0
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: -1
+  nPOTScale: 1
   lightmap: 0
   compressionQuality: 50
   spriteMode: 0
@@ -46,17 +47,17 @@ TextureImporter:
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 100
-  alphaUsage: 2
-  alphaIsTransparency: 1
+  alphaUsage: 0
+  alphaIsTransparency: 0
   spriteTessellationDetail: -1
-  textureType: 0
+  textureType: 6
   textureShape: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
   platformSettings:
   - buildTarget: DefaultTexturePlatform
-    maxTextureSize: 256
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -66,7 +67,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Standalone
-    maxTextureSize: 256
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -76,7 +77,7 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
   - buildTarget: Android
-    maxTextureSize: 256
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
