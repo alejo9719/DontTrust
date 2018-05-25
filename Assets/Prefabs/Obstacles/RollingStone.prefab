@@ -40,7 +40,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1471856996634256}
   m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.04998779, y: 72.7, z: 594.6}
+  m_LocalPosition: {x: 0.04998779, y: 76, z: 594.6}
   m_LocalScale: {x: 7.5, y: 7.5, z: 7.5}
   m_Children: []
   m_Father: {fileID: 0}
@@ -94,7 +94,7 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1471856996634256}
   serializedVersion: 2
-  m_Mass: 12
+  m_Mass: 16
   m_Drag: 0.2
   m_AngularDrag: 0.05
   m_UseGravity: 0
@@ -112,7 +112,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 10, y: 15, z: 40}
+  m_Size: {x: 10, y: 20, z: 40}
   m_Center: {x: 0, y: -5, z: 0}
 --- !u!82 &82761002891880082
 AudioSource:
@@ -134,9 +134,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 200
+  MaxDistance: 600
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 1
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -163,7 +163,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 2
       time: 0
-      value: 0
+      value: 0.8
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -206,7 +206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InitialSpeed: 40
-  m_DamageMultiplier: 2
+  m_DamageMultiplier: 1
   m_MaxDamage: 50
   m_RollSound: {fileID: 8300000, guid: ae52de1ed210b1d4684d08d3eaaf8a78, type: 3}
   m_SoundVolume: 0.7

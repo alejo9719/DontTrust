@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4451251131307444}
   - component: {fileID: 136877817009873330}
+  - component: {fileID: 114102836174675270}
   m_Layer: 0
   m_Name: EnergyDrink
   m_TagString: PowerUp
@@ -115,6 +116,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1201704618998414}
   m_Mesh: {fileID: 4300000, guid: 834e408536afbff4c8f02ff7fe71e655, type: 3}
+--- !u!114 &114102836174675270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1144986255311956}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ba10570fdaf9841baf3196cce353d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PowerID: 1
 --- !u!136 &136877817009873330
 CapsuleCollider:
   m_ObjectHideFlags: 1

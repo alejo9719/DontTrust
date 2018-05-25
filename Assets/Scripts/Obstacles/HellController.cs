@@ -10,12 +10,12 @@ namespace DontTrust.Obstacles
 		private MainCharacter m_MCharacter;
 
 		// Use this for initialization
-		void Start () {
+		protected override void Start () {
 			
 		}
 		
 		// Update is called once per frame
-		void Update () {
+		protected override void Update () {
 			
 		}
 

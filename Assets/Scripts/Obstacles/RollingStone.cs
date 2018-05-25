@@ -9,7 +9,7 @@ namespace DontTrust.Obstacles
 	public class RollingStone : ObstacleClass {
 
 		[SerializeField] private float m_InitialSpeed = 30;
-		[SerializeField] private sbyte m_DamageMultiplier = 2; //MODIFICAR DE ACUERDO A DOC DE DISENIO
+		[SerializeField] private float m_DamageMultiplier = 1.5f; //MODIFICAR DE ACUERDO A DOC DE DISENIO
 		[SerializeField] private sbyte m_MaxDamage = 50; //MODIFICAR DE ACUERDO A DOC DE DISENIO
 		[SerializeField] private AudioClip m_RollSound;
 		[Range(0f, 1f)][SerializeField] float m_SoundVolume = 0.7f;
@@ -25,7 +25,7 @@ namespace DontTrust.Obstacles
 		private Quaternion m_InitialRotation;
 
 		// Use this for initialization
-		new void Start () {
+		protected override void Start () {
 			m_Rigidbody = GetComponent<Rigidbody> ();
 			m_GameManager = GameObject.FindWithTag ("GameController");
 			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
@@ -41,7 +41,7 @@ namespace DontTrust.Obstacles
 		}
 		
 		// Update is called once per frame
-		new void Update () {
+		protected override void Update () {
 			
 		}
 

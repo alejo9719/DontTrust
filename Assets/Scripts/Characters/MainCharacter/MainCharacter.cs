@@ -44,6 +44,8 @@ namespace DontTrust.Characters.Main
 		private MainCharacterAudio m_AudioMethods;
 		private float m_OrigMoveSpdMultiplier;
 
+		private bool m_ShieldActive;
+
 		/* Methods */
 		void Start() //Initialization method
 		{
@@ -376,12 +378,17 @@ namespace DontTrust.Characters.Main
 
 		public void TakeDamage(sbyte damage) //Check the health conditions and update the health indicator in the GUI.
 		{
-			if (damage>5) //Sound will be played only if damage is greater than 5
-				m_AudioMethods.PlayDamageSound(); // Play damage sound
-			m_Health -= damage; //Reduce health
-			if(m_Health<=0){ //Character is dead
-				m_Health = 0; //Health cannot be lower than zero
-				Die(); //Call die method
+			if (!m_ShieldActive) { //Player has no shield
+				if (damage > 5) //Sound will be played only if damage is greater than 5
+				m_AudioMethods.PlayDamageSound (); // Play damage sound
+				m_Health -= damage; //Reduce health
+				if (m_Health <= 0) { //Character is dead
+					m_Health = 0; //Health cannot be lower than zero
+					Die (); //Call die method
+				}
+			}
+			else { //Player has shield
+				StartCoroutine (DeactivatePowerUp(2, 0f)); //Deactivate shield
 			}
 
 			//Debug.Log("Damage Received: " + damage);
@@ -402,13 +409,16 @@ namespace DontTrust.Characters.Main
 		}
 
 
-		public void ActivatePowerUp(sbyte powerID) //Activates the specified powerup
+		public void ActivatePowerUp(sbyte powerID, float powerParameter) //Activates the specified powerup
 		{
 			switch (powerID)
 			{
 			case 1: //Energy Drink
 				m_MoveSpeedMultiplier = m_OrigMoveSpdMultiplier * 1.1f; //Increase speed by 10%
-				StartCoroutine (DeactivatePowerUp (1)); //Call power deactivation (delayed inside the method)
+				StartCoroutine (DeactivatePowerUp (powerID, powerParameter)); //Call power deactivation (delayed inside the method)
+				break;
+			case 2: //Shield
+				m_ShieldActive = true;
 				break;
 			default:
 				break;
@@ -416,13 +426,16 @@ namespace DontTrust.Characters.Main
 			print ("PowerUp "+ powerID + " activated"); //Log activated powerup
 		}
 
-		IEnumerator DeactivatePowerUp(sbyte powerID)
+		IEnumerator DeactivatePowerUp(sbyte powerID , float powerParameter)
 		{
 			switch (powerID)
 			{
 			case 1: //Energy Drink
-				yield return new WaitForSeconds(1.2f); //Delays the powerup deactivation for 1.2s
+				yield return new WaitForSeconds(powerParameter); //Delays the powerup deactivation for 1.2s
 				m_MoveSpeedMultiplier = m_OrigMoveSpdMultiplier; //Restore speed
+				break;
+			case 2:
+				m_ShieldActive = false;
 				break;
 			default:
 				break;
