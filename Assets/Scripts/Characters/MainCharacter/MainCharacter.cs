@@ -420,7 +420,11 @@ namespace DontTrust.Characters.Main
 			case 2: //Shield
 				m_ShieldActive = true;
 				break;
+			case 3: //First aid kit
+				m_Health+=(sbyte)powerParameter;
+				break;
 			default:
+				Debug.Log ("Power Up ID not initialized or not recognized");
 				break;
 			}
 			print ("PowerUp "+ powerID + " activated"); //Log activated powerup
@@ -438,6 +442,7 @@ namespace DontTrust.Characters.Main
 				m_ShieldActive = false;
 				break;
 			default:
+				Debug.Log ("Power Up ID not initialized or not recognized");
 				break;
 			}
 			print ("PowerUp "+ powerID + " deactivated"); //Log deactivated powerup

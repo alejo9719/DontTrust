@@ -72,6 +72,7 @@ GameObject:
   - component: {fileID: 4199703406666802}
   - component: {fileID: 65274597327791964}
   - component: {fileID: 114340958538524758}
+  - component: {fileID: 111336872874877928}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Untagged
@@ -86,7 +87,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1923794445426820}
   m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.04998779, y: -10.74, z: 862.0304}
+  m_LocalPosition: {x: 0.04998779, y: -10.74, z: 900}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4793436997745784}
@@ -94,7 +95,7 @@ Transform:
   - {fileID: 4361526333824606}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+  m_LocalEulerAnglesHint: {x: 0, y: 80.609695, z: -90}
 --- !u!4 &4361526333824606
 Transform:
   m_ObjectHideFlags: 1
@@ -269,6 +270,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.5, y: 1, z: 4.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!111 &111336872874877928
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1923794445426820}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: d9145155af4078a4a8cd7122c102fb16, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: d9145155af4078a4a8cd7122c102fb16, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &114340958538524758
 MonoBehaviour:
   m_ObjectHideFlags: 1

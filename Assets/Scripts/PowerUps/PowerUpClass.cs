@@ -26,7 +26,7 @@ namespace DontTrust.Obstacles
 				m_MainChar = other.GetComponent<MainCharacter>(); //Get the MainCharacter component (class) of the player's gameObject
 				m_MainChar.ActivatePowerUp(m_PowerID, 0f);
 
-				Destroy(this.gameObject); //Disappear energy drink
+				Destroy(this.gameObject); //Disappear power up
 			}
 		}
 	}
