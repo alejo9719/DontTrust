@@ -11,30 +11,23 @@ Assets:
 
   	- Map Design
   	- Enemies Models:
-	-- Change crouched enemy to aiming-down-sniper position)
+	-- Change crouched enemy to aiming-down-sniper position
 	-- Turret model
 	- Textures:
 	-- Main Character
 	-- Enemies
-	-Sounds:
-	-- Game music
 
 Programming:
 
-	- Finish camera movement
-	- Main Menu
+	- Main Menu (Options)
 	- Pause Menu
 	- Enemy IA / Animation:
 	-- Change crouched enemy behaviour along with model
 	-- Turret
 	- Power Ups
-	- Obstacles:
-	-- Convert water into "falling" obstacle by putting a trigger collider on it and disabling the Player's collider when entering on it so he falls.
 	- UI
-  
- Design document:
- 
-	- Map Sketches
+	- Time count
+	- Lifes system
 	
 # Tutorial:
 

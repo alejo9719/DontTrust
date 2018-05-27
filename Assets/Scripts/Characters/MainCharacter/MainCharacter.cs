@@ -38,11 +38,13 @@ namespace DontTrust.Characters.Main
 		CapsuleCollider m_Capsule; //Character's collider
 		bool m_Crouching; //Crouching flag
 		bool m_WallCollision; //Wall collision flag
-		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127). Public for other classes to see it, but not serializable.
 		private GameObject m_GameManager;
 		private Mechanics m_ManagerMechanics;
 		private MainCharacterAudio m_AudioMethods;
 		private float m_OrigMoveSpdMultiplier;
+
+		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127)
+		private sbyte m_Lifes; //Character's remaining lifes;
 
 		private bool m_ShieldActive;
 
@@ -61,6 +63,7 @@ namespace DontTrust.Characters.Main
 			m_IsGrounded = true; //Assumes the character originally on ground (Can change when it checks grounded status)
 
 			m_Health = 100;
+			m_Lifes = 3;
 			m_GameManager = GameObject.FindWithTag ("GameController");
 			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
 			m_AudioMethods = GetComponent<MainCharacterAudio> ();
@@ -395,17 +398,31 @@ namespace DontTrust.Characters.Main
 			//Debug.Log("Health = " + m_Health);
 		}
 
-		public void Die() //Die function //FALTA IMPLEMENTAR SISTEMA DE VIDAS
+		public void Die() //Character loses 1 life
 		{
-			m_Rigidbody.velocity = Vector3.zero; //Stop character
-			m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
-			m_Health = 100; //TEMPORAL
+			m_Rigidbody.velocity = Vector3.zero; //Stop character (Respawns without velocity)
+			m_Lifes -= 1;
+			if (m_Lifes <= 0) { //Game Over
+				m_Lifes = 0;
+				//MOSTRAR TEXTO DE GAME OVER POR UN TIEMPO CORTO
+				m_ManagerMechanics.RestartLevel(); //DEBE SER RestartGame
+				m_Lifes = 3; //Reset player lifes
+			}
+			else //Load last checkpoint
+				m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
+			m_Health = 100;
 		}
 
 
 		public sbyte GetHealth()
 		{
 			return m_Health;
+		}
+
+
+		public sbyte GetLifes()
+		{
+			return m_Lifes;
 		}
 
 
@@ -421,7 +438,9 @@ namespace DontTrust.Characters.Main
 				m_ShieldActive = true;
 				break;
 			case 3: //First aid kit
-				m_Health+=(sbyte)powerParameter;
+				m_Health += (sbyte)powerParameter;
+				if (m_Health >= 100)
+					m_Health = 100;
 				break;
 			default:
 				Debug.Log ("Power Up ID not initialized or not recognized");
