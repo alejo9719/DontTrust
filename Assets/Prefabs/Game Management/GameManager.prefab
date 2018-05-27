@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InitialCheckpoint: {fileID: 0}
   m_LevelTime: 240
+  m_TimeEnabled: 1
 --- !u!114 &114757739745539868
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -166,3 +167,6 @@ MonoBehaviour:
   m_HealthBar: {fileID: 0}
   m_Lifes: {fileID: 0}
   m_TimeCounter: {fileID: 0}
+  m_GameOverMessage: {fileID: 0}
+  m_DeathMessage: {fileID: 0}
+  m_TimesUpMessage: {fileID: 0}

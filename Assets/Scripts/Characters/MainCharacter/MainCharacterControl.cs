@@ -44,7 +44,7 @@ namespace DontTrust.Characters.Main
 			}*/
 
 			if (Input.GetKeyDown (KeyCode.K)) //Kills the character
-				m_Character.Die ();
+				m_Character.Die (3); //Character dies by key press
         }
 
 
@@ -75,6 +75,8 @@ namespace DontTrust.Characters.Main
 
             // pass all parameters to the character control script
             m_Character.Move(m_Move, crouch, m_Jump);
+			// call the characters CheckStatus method (manages death system, etc)
+			m_Character.CheckStatus ();
             m_Jump = false;
         }
     }

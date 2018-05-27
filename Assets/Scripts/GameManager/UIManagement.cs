@@ -12,6 +12,9 @@ namespace DontTrust.GameManager
 		[SerializeField] private Image m_HealthBar;
 		[SerializeField] private TMP_Text m_Lifes;
 		[SerializeField] private TMP_Text m_TimeCounter;
+		[SerializeField] private TMP_Text m_GameOverMessage;
+		[SerializeField] private TMP_Text m_DeathMessage;
+		[SerializeField] private TMP_Text m_TimesUpMessage;
 		private GameObject m_Player;
 		private MainCharacter m_Character;
 		private Mechanics m_Mechanics;
@@ -38,6 +41,38 @@ namespace DontTrust.GameManager
 		{
 			m_Lifes.SetText(m_Character.GetLifes().ToString()); //Update lifes number
 			m_TimeCounter.SetText (m_Mechanics.GetTime().ToString()); //Update time counter
+		}
+
+		//Public methods
+
+		public void ShowGameOver()
+		{
+			m_GameOverMessage.gameObject.SetActive (true);
+		}
+
+		public void HideGameOver()
+		{
+			m_GameOverMessage.gameObject.SetActive (false);
+		}
+
+		public void ShowDeath()
+		{
+			m_DeathMessage.gameObject.SetActive (true);
+		}
+
+		public void HideDeath()
+		{
+			m_DeathMessage.gameObject.SetActive (false);
+		}
+
+		public void ShowTimesUp()
+		{
+			m_TimesUpMessage.gameObject.SetActive (true);
+		}
+
+		public void HideTimesUp()
+		{
+			m_TimesUpMessage.gameObject.SetActive (false);
 		}
 	}
 }

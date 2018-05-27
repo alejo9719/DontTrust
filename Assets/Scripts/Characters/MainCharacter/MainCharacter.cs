@@ -19,6 +19,7 @@ namespace DontTrust.Characters.Main
 		[SerializeField] float m_MoveSpeedMultiplier = 1f;
 		[SerializeField] float m_AnimSpeedMultiplier = 1f;
 		[SerializeField] float m_GroundCheckDistance = 0.2f;
+		[SerializeField] float m_RespawnDelay = 4f;
 
 		/* Public fields */
 		public bool m_IsGrounded; //Flag to indicate if the character is touching the ground. Public in order for other objects to be able to see it.
@@ -40,8 +41,10 @@ namespace DontTrust.Characters.Main
 		bool m_WallCollision; //Wall collision flag
 		private GameObject m_GameManager;
 		private Mechanics m_ManagerMechanics;
+		private UIManagement m_UIManager;
 		private MainCharacterAudio m_AudioMethods;
 		private float m_OrigMoveSpdMultiplier;
+		private float m_RespawnTimer;
 
 		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127)
 		private sbyte m_Lifes; //Character's remaining lifes;
@@ -66,9 +69,11 @@ namespace DontTrust.Characters.Main
 			m_Lifes = 3;
 			m_GameManager = GameObject.FindWithTag ("GameController");
 			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
+			m_UIManager = m_GameManager.GetComponent<UIManagement> ();
 			m_AudioMethods = GetComponent<MainCharacterAudio> ();
 
 			m_OrigMoveSpdMultiplier = m_MoveSpeedMultiplier;
+			m_RespawnTimer = 0f;
 		}
 
 
@@ -103,6 +108,14 @@ namespace DontTrust.Characters.Main
 
 			// send input and other state parameters to the animator
 			UpdateAnimator(move);
+		}
+
+		public void CheckStatus()
+		{
+			if (m_Health <= 0) { //Character is dead
+				m_Health = 0; //Health cannot be lower than zero
+				Die (1); //Call die method (called continuously until respawn) because of health reaching 0
+			}
 		}
 
 
@@ -387,7 +400,7 @@ namespace DontTrust.Characters.Main
 				m_Health -= damage; //Reduce health
 				if (m_Health <= 0) { //Character is dead
 					m_Health = 0; //Health cannot be lower than zero
-					Die (); //Call die method
+					Die (1); //Call die method because health reaching 0
 				}
 			}
 			else { //Player has shield
@@ -398,19 +411,50 @@ namespace DontTrust.Characters.Main
 			//Debug.Log("Health = " + m_Health);
 		}
 
-		public void Die() //Character loses 1 life
+		public void Die(sbyte type) //Character loses 1 life (parameter specifies the type of death)
 		{
-			m_Rigidbody.velocity = Vector3.zero; //Stop character (Respawns without velocity)
-			m_Lifes -= 1;
-			if (m_Lifes <= 0) { //Game Over
-				m_Lifes = 0;
-				//MOSTRAR TEXTO DE GAME OVER POR UN TIEMPO CORTO
-				m_ManagerMechanics.RestartLevel(); //DEBE SER RestartGame
-				m_Lifes = 3; //Reset player lifes
+			m_Health = 0; //Mantain health in 0 while dead
+			m_Rigidbody.velocity = Vector3.zero; //Stop character
+			m_Capsule.enabled = false; //Disable character collider
+			m_Rigidbody.isKinematic = true; //Disable rigidbody forces while dead
+			transform.GetChild(0).gameObject.SetActive(false); //Make character invisible (disappear) by disabling model
+			m_ManagerMechanics.m_TimeEnabled = false; //Disable level time run while dead
+
+			//PLAY DEATH ANIMATION
+			//PLay death sound
+			if (type == 2) { //Time's up
+				m_UIManager.ShowTimesUp(); //Show time's up message
 			}
-			else //Load last checkpoint
-				m_ManagerMechanics.LoadCheckpoint(); //Return character to checkpoint
-			m_Health = 100;
+			if(m_Lifes == 1){ //Last life lost
+				m_UIManager.ShowGameOver(); //Show game over message
+				//Play game over sound
+			}
+			else{
+				m_UIManager.ShowDeath(); //Show death message
+				//PLay game over sound
+			}
+
+			m_RespawnTimer += Time.deltaTime; //Update respawn timer
+			if (m_RespawnTimer >= m_RespawnDelay) { //Respawn timer up (must respawn character)
+				m_RespawnTimer=0; //Reset respawn timer
+				m_Capsule.enabled = true; //Re-enable collider
+				m_Rigidbody.isKinematic = false; //Re-enable rigidbody forces
+				transform.GetChild(0).gameObject.SetActive(true); //Make character visible by re-enabling model
+				m_Lifes -= 1;
+				if (m_Lifes <= 0) { //Game Over (Restarts game)
+					m_Lifes = 0;
+					m_ManagerMechanics.RestartLevel (); //DEBE SER RestartGame
+					m_Lifes = 3; //Reset player lifes
+					m_UIManager.HideGameOver(); //Hide game over message
+				}
+				else { //Lifes remaining. Load last checkpoint
+					m_ManagerMechanics.LoadCheckpoint (); //Return character to checkpoint
+					m_UIManager.HideDeath (); //Hide death message
+				}
+				m_UIManager.HideTimesUp (); //Hide time's up message
+				m_ManagerMechanics.m_TimeEnabled = true; //Re-enable level time run
+				m_Health = 100; //Reset player's health
+			}
 		}
 
 

@@ -16,6 +16,7 @@ namespace DontTrust.GameManager
 		private MainCharacter m_Character;
 		private List<GameObject> m_RespawnableObstacles = new List<GameObject>();
 		private int m_OrigLevelTime;
+		[HideInInspector] public bool m_TimeEnabled;
 
 		// Use this for initialization
 		void Start () {
@@ -24,6 +25,7 @@ namespace DontTrust.GameManager
 			m_Character = m_Player.GetComponent<MainCharacter> ();
 
 			m_OrigLevelTime = m_LevelTime;
+			m_TimeEnabled = true;
 			InvokeRepeating ("TimeUpdate", 1f, 1f); //Call time update function after 1 second and repeat every 1 second
 		}
 		
@@ -34,12 +36,13 @@ namespace DontTrust.GameManager
 
 		private void TimeUpdate() //Update level time
 		{
-			m_LevelTime -= 1; //Decrease time by 1 second
-			if (m_LevelTime <= 0) { //Time's up
-				m_LevelTime = 0;
-				//MOSTRAR TEXTO POR UN TIEMPO CORTO
-				m_LevelTime = m_OrigLevelTime;
-				m_Character.Die ();
+			if (m_TimeEnabled) {
+				m_LevelTime -= 1; //Decrease time by 1 second
+				if (m_LevelTime <= 0) { //Time's up
+					m_LevelTime = m_OrigLevelTime;
+					m_TimeEnabled = false; //Disable time run until character's respawn
+					m_Character.Die (2); //Character dies by time overrun
+				}
 			}
 		}
 
@@ -61,13 +64,15 @@ namespace DontTrust.GameManager
 				//Debug.Log(obstacle.name);
 				obstacle.GetComponent<ObstacleClass>().Respawn();
 			}
+
+			m_TimeEnabled = true; //Re-enable time run
 		}
 
-		public void RestartLevel() //DEBE SER RestartGame Y REINICIAR TODO EL JUEGO SI HAY GAMEOVER
+		public void RestartLevel() //TODO: DEBE SER RestartGame Y REINICIAR TODO EL JUEGO SI HAY GAMEOVER
 		{
 			m_LastCheckpoint = m_InitialCheckpoint;
 			LoadCheckpoint ();
-			//REAPARECER POWERUPS
+			//TODO: REAPARECER POWERUPS
 		}
 
 		public void AddRespawnableObstacle(GameObject obstacle)
