@@ -10,7 +10,7 @@ namespace DontTrust.GameManager
 	public class UIManagement : MonoBehaviour {
 
 		[SerializeField] private Image m_HealthBar;
-		[SerializeField] private TMP_Text m_Lifes;
+		[SerializeField] private TMP_Text m_Lives;
 		[SerializeField] private TMP_Text m_TimeCounter;
 		[SerializeField] private TMP_Text m_GameOverMessage;
 		[SerializeField] private TMP_Text m_DeathMessage;
@@ -39,7 +39,7 @@ namespace DontTrust.GameManager
 
 		void UpdateTexts()
 		{
-			m_Lifes.SetText(m_Character.GetLifes().ToString()); //Update lifes number
+			m_Lives.SetText(m_Character.GetLifes().ToString()); //Update lifes number
 			m_TimeCounter.SetText (m_Mechanics.GetTime().ToString()); //Update time counter
 		}
 

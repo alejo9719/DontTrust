@@ -47,7 +47,7 @@ namespace DontTrust.Characters.Main
 		private float m_RespawnTimer;
 
 		private sbyte m_Health; //Character's health. 8-bit signed integer (Max. 127)
-		private sbyte m_Lifes; //Character's remaining lifes;
+		private sbyte m_Lives; //Character's remaining lifes;
 
 		private bool m_ShieldActive;
 
@@ -66,7 +66,7 @@ namespace DontTrust.Characters.Main
 			m_IsGrounded = true; //Assumes the character originally on ground (Can change when it checks grounded status)
 
 			m_Health = 100;
-			m_Lifes = 3;
+			m_Lives = 3;
 			m_GameManager = GameObject.FindWithTag ("GameController");
 			m_ManagerMechanics = m_GameManager.GetComponent<Mechanics> ();
 			m_UIManager = m_GameManager.GetComponent<UIManagement> ();
@@ -425,7 +425,7 @@ namespace DontTrust.Characters.Main
 			if (type == 2) { //Time's up
 				m_UIManager.ShowTimesUp(); //Show time's up message
 			}
-			if(m_Lifes == 1){ //Last life lost
+			if(m_Lives == 1){ //Last life lost
 				m_UIManager.ShowGameOver(); //Show game over message
 				//Play game over sound
 			}
@@ -440,11 +440,11 @@ namespace DontTrust.Characters.Main
 				m_Capsule.enabled = true; //Re-enable collider
 				m_Rigidbody.isKinematic = false; //Re-enable rigidbody forces
 				transform.GetChild(0).gameObject.SetActive(true); //Make character visible by re-enabling model
-				m_Lifes -= 1;
-				if (m_Lifes <= 0) { //Game Over (Restarts game)
-					m_Lifes = 0;
+				m_Lives -= 1;
+				if (m_Lives <= 0) { //Game Over (Restarts game)
+					m_Lives = 0;
 					m_ManagerMechanics.RestartLevel (); //DEBE SER RestartGame
-					m_Lifes = 3; //Reset player lifes
+					m_Lives = 3; //Reset player lifes
 					m_UIManager.HideGameOver(); //Hide game over message
 				}
 				else { //Lifes remaining. Load last checkpoint
@@ -466,7 +466,7 @@ namespace DontTrust.Characters.Main
 
 		public sbyte GetLifes()
 		{
-			return m_Lifes;
+			return m_Lives;
 		}
 
 
