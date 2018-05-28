@@ -42,9 +42,9 @@ namespace DontTrust.Characters.Enemies
 				//Debug.Log ("Dispara");
 				m_nextFire = Time.time + m_fireRate; //Set the next shot firing time
 				GameObject bullet = Instantiate( m_bulletPrefab, transform.position + transform.forward*4.5f + transform.right*0.5f + transform.up*3.2f,//new Vector3(transform.position.x-0.5f, transform.position.y+3.2f, transform.position.z-4.5f), 
-					Quaternion.Euler(90f, 0f, 0f) ) as GameObject; //Instantiate new "prefab" object (bullet) on the specified position and rotation
+					Quaternion.Euler(90f, transform.eulerAngles.y, 0f) ) as GameObject; //Instantiate new "prefab" object (bullet) on the specified position and rotation
 				//bullet.name = "Bullet" + count++;
-				bullet.GetComponent<Rigidbody>().AddForce(-Vector3.forward*55, ForceMode.Impulse); //Bullet is shot with an impulse force of magnitude 55
+				bullet.GetComponent<Rigidbody>().AddForce(transform.forward*55, ForceMode.Impulse); //Bullet is shot with an impulse force of magnitude 55
 				GetComponent<AudioSource>().PlayOneShot (m_ShotSound); // Play shot sound
 				Destroy(bullet, 2f); //Destroy the bullet 2 seconds later
 
