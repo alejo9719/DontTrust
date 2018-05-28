@@ -26,9 +26,9 @@ namespace DontTrust.Characters.Enemies
 		void FixedUpdate () {
 			RaycastHit hitInfo;
 
-			Debug.DrawLine(transform.position + (Vector3.up * 4f), transform.position + (Vector3.up * 4f) + (Vector3.back * m_AimDistance)); //If in the editor, draw the raycast line
+			Debug.DrawLine(transform.position + (Vector3.up * 4f), transform.position + (Vector3.up * 4f) + (transform.forward * m_AimDistance)); //If in the editor, draw the raycast line
 
-			if (Physics.Raycast(transform.position + (Vector3.up * 4f), Vector3.back, out hitInfo, m_AimDistance) && hitInfo.transform.tag == "Player")
+			if (Physics.Raycast(transform.position + (Vector3.up * 4f), transform.forward, out hitInfo, m_AimDistance) && hitInfo.transform.tag == "Player")
 			{
 				m_shoot = true;
 			}
@@ -41,7 +41,7 @@ namespace DontTrust.Characters.Enemies
 			{
 				//Debug.Log ("Dispara");
 				m_nextFire = Time.time + m_fireRate; //Set the next shot firing time
-				GameObject bullet = Instantiate( m_bulletPrefab, new Vector3(transform.position.x-0.5f, transform.position.y+3.2f, transform.position.z-4.5f), 
+				GameObject bullet = Instantiate( m_bulletPrefab, transform.position + transform.forward*4.5f + transform.right*0.5f + transform.up*3.2f,//new Vector3(transform.position.x-0.5f, transform.position.y+3.2f, transform.position.z-4.5f), 
 					Quaternion.Euler(90f, 0f, 0f) ) as GameObject; //Instantiate new "prefab" object (bullet) on the specified position and rotation
 				//bullet.name = "Bullet" + count++;
 				bullet.GetComponent<Rigidbody>().AddForce(-Vector3.forward*55, ForceMode.Impulse); //Bullet is shot with an impulse force of magnitude 55
